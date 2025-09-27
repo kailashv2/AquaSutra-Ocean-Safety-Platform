@@ -826,12 +826,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 For support, please contact:
-- **Email**: support@aquasutra.org
+- **Email**: kailashv2985@gmail.com
 - **Documentation**: [docs.aquasutra.org](https://docs.aquasutra.org)
 - **Community Forum**: [community.aquasutra.org](https://community.aquasutra.org)
 - **Issue Tracker**: [GitHub Issues](https://github.com/aquasutra/platform/issues)
 
 ---
 
-**AquaSutra Ocean Safety Platform** - Empowering communities through crowdsourced ocean hazard intelligence and real-time safety information. 🌊# AquaSutra-Ocean-Safety-Platform
-# AquaSutra-Ocean-Safety-Platform
