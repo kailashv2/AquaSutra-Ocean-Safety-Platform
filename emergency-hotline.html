@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Hotline - AquaSutra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        .hotline-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .hotline-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(239, 68, 68, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(220, 38, 38, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hotline-header {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-title h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .emergency-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            background: #10B981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .hotline-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .emergency-alert {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+            border: 3px solid #EF4444;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 48px;
+            animation: emergencyPulse 3s infinite;
+        }
+
+        .alert-icon {
+            font-size: 100px;
+            margin-bottom: 24px;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .alert-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: #DC2626;
+            margin-bottom: 16px;
+        }
+
+        .alert-subtitle {
+            font-size: 20px;
+            color: #7F1D1D;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .emergency-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+
+        .emergency-btn {
+            padding: 20px 40px;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .emergency-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .emergency-btn:hover::before {
+            left: 100%;
+        }
+
+        .emergency-btn.primary {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white;
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+            animation: buttonPulse 2s infinite;
+        }
+
+        .emergency-btn.secondary {
+            background: rgba(239, 68, 68, 0.1);
+            color: #DC2626;
+            border: 3px solid #EF4444;
+        }
+
+        .emergency-btn:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(239, 68, 68, 0.4);
+        }
+
+        .hotline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .hotline-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-left: 4px solid;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hotline-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(239, 68, 68, 0.15);
+        }
+
+        .hotline-card.emergency {
+            border-left-color: #EF4444;
+        }
+
+        .hotline-card.medical {
+            border-left-color: #F59E0B;
+        }
+
+        .hotline-card.rescue {
+            border-left-color: #3B82F6;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            font-size: 40px;
+            padding: 16px;
+            border-radius: 16px;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1E293B;
+        }
+
+        .card-description {
+            color: #64748B;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            background: #F8FAFC;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .contact-number {
+            font-size: 24px;
+            font-weight: 800;
+            color: #EF4444;
+            margin-bottom: 8px;
+        }
+
+        .contact-details {
+            color: #64748B;
+            font-size: 14px;
+        }
+
+        .card-action {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .card-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+        }
+
+        .instructions-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .instructions-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1E293B;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .instruction-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: #F8FAFC;
+            border-radius: 12px;
+            border-left: 4px solid #EF4444;
+        }
+
+        .step-number {
+            background: #EF4444;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 700;
+            color: #1E293B;
+            margin-bottom: 8px;
+        }
+
+        .step-description {
+            color: #64748B;
+            line-height: 1.6;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes emergencyPulse {
+            0%, 100% { 
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+            50% { 
+                box-shadow: 0 0 0 20px rgba(239, 68, 68, 0);
+            }
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+            }
+            50% { 
+                transform: scale(1.02);
+                box-shadow: 0 12px 35px rgba(239, 68, 68, 0.4);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hotline-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .emergency-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .emergency-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .alert-title {
+                font-size: 28px;
+            }
+
+            .instructions-section {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hotline-container">
+        <!-- Header -->
+        <header class="hotline-header">
+            <div class="header-content">
+                <div class="header-title">
+                    <a href="index.html" class="back-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        Back to Home
+                    </a>
+                    <h1>🚨 Emergency Hotline</h1>
+                </div>
+                <div class="emergency-status">
+                    <div class="status-dot"></div>
+                    <span style="font-weight: 600; font-size: 14px;">24/7 Available</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="hotline-main">
+            <!-- Emergency Alert -->
+            <section class="emergency-alert">
+                <div class="alert-icon">🚨</div>
+                <h1 class="alert-title">EMERGENCY HOTLINE</h1>
+                <p class="alert-subtitle">
+                    For immediate life-threatening ocean emergencies, call our 24/7 hotline. 
+                    Our trained emergency coordinators will dispatch appropriate response teams.
+                </p>
+                <div class="emergency-actions">
+                    <button class="emergency-btn primary" onclick="callEmergencyHotline()">
+                        📞 CALL EMERGENCY HOTLINE
+                    </button>
+                    <button class="emergency-btn secondary" onclick="window.location.href='report-hazard.html'">
+                        ⚠️ REPORT NON-EMERGENCY
+                    </button>
+                </div>
+            </section>
+
+            <!-- Hotline Services -->
+            <section class="hotline-grid">
+                <div class="hotline-card emergency">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: rgba(239, 68, 68, 0.1);">🚨</div>
+                        <div class="card-title">Emergency Coordination</div>
+                    </div>
+                    <div class="card-description">
+                        Immediate response coordination for life-threatening ocean emergencies including drowning, boat distress, and severe weather incidents.
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-number">+1 (800) OCEAN-911</div>
+                        <div class="contact-details">Available 24/7 • Average response time: 30 seconds</div>
+                    </div>
+                    <button class="card-action" onclick="callEmergencyHotline()">Call Emergency Line</button>
+                </div>
+
+                <div class="hotline-card medical">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: rgba(245, 158, 11, 0.1);">🏥</div>
+                        <div class="card-title">Medical Emergency</div>
+                    </div>
+                    <div class="card-description">
+                        Direct line to marine medical emergency services for injuries, medical conditions, and health emergencies occurring in ocean environments.
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-number">+1 (800) SEA-MEDIC</div>
+                        <div class="contact-details">Available 24/7 • Paramedic dispatch available</div>
+                    </div>
+                    <button class="card-action" onclick="callMedicalEmergency()">Call Medical Line</button>
+                </div>
+
+                <div class="hotline-card rescue">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: rgba(59, 130, 246, 0.1);">🚁</div>
+                        <div class="card-title">Search & Rescue</div>
+                    </div>
+                    <div class="card-description">
+                        Coast Guard and marine rescue coordination for missing persons, vessel distress, and search and rescue operations.
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-number">+1 (800) SAR-TEAM</div>
+                        <div class="contact-details">Available 24/7 • Coast Guard coordination</div>
+                    </div>
+                    <button class="card-action" onclick="callSearchRescue()">Call Rescue Line</button>
+                </div>
+            </section>
+
+            <!-- Emergency Instructions -->
+            <section class="instructions-section">
+                <h2 class="instructions-title">🆘 Emergency Response Instructions</h2>
+                
+                <div class="instruction-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Assess the Situation</div>
+                        <div class="step-description">
+                            Quickly determine if this is a life-threatening emergency. If someone is unconscious, severely injured, or in immediate danger, proceed to step 2 immediately.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Call for Help</div>
+                        <div class="step-description">
+                            Call our emergency hotline immediately: <strong>+1 (800) OCEAN-911</strong>. If you're in the US, you can also call 911 first, then our hotline for specialized ocean emergency coordination.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Provide Clear Information</div>
+                        <div class="step-description">
+                            Give your exact location (GPS coordinates if available), describe the emergency, number of people involved, and current conditions. Stay on the line for instructions.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">Follow Instructions</div>
+                        <div class="step-description">
+                            Our emergency coordinators will guide you through immediate response actions while dispatching appropriate rescue teams. Do not hang up unless instructed.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <div class="step-title">Assist Rescue Teams</div>
+                        <div class="step-description">
+                            Help rescue teams locate you by using visual signals, staying in contact, and providing updates on the situation as it develops.
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚨 Emergency Hotline Loading...');
+            
+            // Animate elements on load
+            setTimeout(() => {
+                const elements = document.querySelectorAll('.emergency-alert, .hotline-grid, .instructions-section');
+                elements.forEach((element, index) => {
+                    element.style.opacity = '0';
+                    element.style.transform = 'translateY(40px)';
+                    element.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                    
+                    setTimeout(() => {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }, index * 200);
+                });
+            }, 100);
+
+            console.log('✅ Emergency Hotline Ready!');
+        });
+
+        function callEmergencyHotline() {
+            const modal = createEmergencyModal();
+            document.body.appendChild(modal);
+        }
+
+        function callMedicalEmergency() {
+            showNotification('🏥 Connecting to marine medical emergency services...', 'error');
+        }
+
+        function callSearchRescue() {
+            showNotification('🚁 Connecting to Coast Guard search and rescue...', 'error');
+        }
+
+        function createEmergencyModal() {
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+                backdrop-filter: blur(8px);
+                animation: fadeIn 0.3s ease;
+            `;
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                background: white;
+                border-radius: 20px;
+                padding: 40px;
+                max-width: 500px;
+                width: 90vw;
+                text-align: center;
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                animation: emergencyModalSlide 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                border: 4px solid #EF4444;
+            `;
+            
+            modal.innerHTML = `
+                <div style="font-size: 80px; margin-bottom: 20px; animation: emergencyPulse 1s infinite;">🚨</div>
+                <h2 style="color: #EF4444; font-size: 32px; font-weight: 800; margin-bottom: 16px;">EMERGENCY CALL</h2>
+                <p style="color: #7F1D1D; font-size: 18px; line-height: 1.6; margin-bottom: 24px;">
+                    <strong>This will connect you to our 24/7 emergency response center.</strong><br>
+                    For life-threatening situations only.
+                </p>
+                <div style="background: #FEF2F2; border: 2px solid #EF4444; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                    <p style="color: #991B1B; font-weight: 600; margin: 0;">
+                        📞 Calling: +1 (800) OCEAN-911<br>
+                        🌍 Location: Automatically shared<br>
+                        ⏱️ Response time: Under 30 seconds
+                    </p>
+                </div>
+                <div style="display: flex; gap: 12px; justify-content: center;">
+                    <button onclick="confirmEmergencyCall()" style="padding: 16px 32px; background: #EF4444; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 16px; cursor: pointer;">
+                        📞 CONFIRM CALL
+                    </button>
+                    <button onclick="closeEmergencyModal()" style="padding: 16px 32px; background: #6B7280; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                        Cancel
+                    </button>
+                </div>
+            `;
+            
+            overlay.appendChild(modal);
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) closeEmergencyModal();
+            });
+            
+            return overlay;
+        }
+
+        function confirmEmergencyCall() {
+            closeEmergencyModal();
+            showNotification('📞 Connecting to emergency response center... Stay on the line.', 'error');
+        }
+
+        function closeEmergencyModal() {
+            const modal = document.querySelector('[style*="position: fixed"]');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 16px 20px;
+                border-radius: 12px;
+                color: white;
+                font-weight: 500;
+                z-index: 10000;
+                animation: slideInRight 0.3s ease;
+                max-width: 350px;
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+                font-family: 'Inter', sans-serif;
+            `;
+            
+            switch (type) {
+                case 'success':
+                    notification.style.background = 'linear-gradient(135deg, #10B981, #059669)';
+                    break;
+                case 'error':
+                    notification.style.background = 'linear-gradient(135deg, #EF4444, #DC2626)';
+                    break;
+                case 'warning':
+                    notification.style.background = 'linear-gradient(135deg, #F59E0B, #D97706)';
+                    break;
+                default:
+                    notification.style.background = 'linear-gradient(135deg, #EF4444, #DC2626)';
+            }
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 5000);
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            
+            @keyframes emergencyModalSlide {
+                from { transform: scale(0.8) translateY(-50px); opacity: 0; }
+                to { transform: scale(1) translateY(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ocean Monitoring Dashboard - AquaSutra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        /* Home Page Style Background */
+        .monitoring-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 1) 0%, 
+                rgba(248, 250, 252, 0.95) 25%,
+                rgba(243, 240, 255, 0.8) 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .monitoring-container::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 25% 15%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 75% 85%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 45% 50%, rgba(14, 165, 233, 0.04) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Floating Orbs - Home Page Style */
+        .floating-orbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            animation: float 20s infinite ease-in-out;
+            opacity: 0.6;
+        }
+
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+            top: -150px;
+            left: -150px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #06B6D4, #10B981);
+            top: 20%;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, #F59E0B, #EF4444);
+            bottom: -125px;
+            left: 30%;
+            animation-delay: -10s;
+        }
+
+        .orb-4 {
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+            top: 60%;
+            right: 20%;
+            animation-delay: -15s;
+        }
+
+        .orb-5 {
+            width: 220px;
+            height: 220px;
+            background: linear-gradient(135deg, #10B981, #06B6D4);
+            top: 40%;
+            left: 10%;
+            animation-delay: -7s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            33% { transform: translateY(-30px) rotate(120deg) scale(1.1); }
+            66% { transform: translateY(20px) rotate(240deg) scale(0.9); }
+        }
+
+        .monitoring-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-title h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0;
+            color: var(--gray-900);
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--gray-700);
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid rgba(229, 231, 235, 0.5);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .monitoring-main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.08),
+                0 1px 2px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-left: 4px solid;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.12),
+                0 8px 16px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-card.ocean-temp {
+            border-left-color: #3B82F6;
+        }
+
+        .stat-card.wave-height {
+            border-left-color: #0EA5E9;
+        }
+
+        .stat-card.water-quality {
+            border-left-color: #10B981;
+        }
+
+        .stat-card.weather {
+            border-left-color: #F59E0B;
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .stat-icon {
+            font-size: 24px;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .stat-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #6B7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: #1E293B;
+            margin-bottom: 8px;
+        }
+
+        .stat-change {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .stat-change.positive {
+            color: #10B981;
+        }
+
+        .stat-change.negative {
+            color: #EF4444;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        .chart-section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .chart-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1E293B;
+        }
+
+        .time-selector {
+            display: flex;
+            gap: 8px;
+        }
+
+        .time-btn {
+            padding: 6px 12px;
+            border: 1px solid #E5E7EB;
+            background: white;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .time-btn.active {
+            background: #0EA5E9;
+            color: white;
+            border-color: #0EA5E9;
+        }
+
+        .chart-container {
+            height: 300px;
+            display: flex;
+            align-items: end;
+            gap: 8px;
+            padding: 20px 0;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(135deg, #0EA5E9, #0284C7);
+            border-radius: 4px 4px 0 0;
+            min-height: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+            transform: scaleY(1.05);
+        }
+
+        .alerts-panel {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .alerts-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .alerts-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1E293B;
+        }
+
+        .alert-item {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border-left: 4px solid;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .alert-item:hover {
+            transform: translateX(4px);
+        }
+
+        .alert-item.high {
+            background: #FEF2F2;
+            border-left-color: #EF4444;
+        }
+
+        .alert-item.medium {
+            background: #FEF3C7;
+            border-left-color: #F59E0B;
+        }
+
+        .alert-item.low {
+            background: #ECFDF5;
+            border-left-color: #10B981;
+        }
+
+        .alert-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-icon {
+            font-size: 20px;
+        }
+
+        .alert-text {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            color: #1E293B;
+            margin-bottom: 4px;
+        }
+
+        .alert-desc {
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        .sensors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .sensor-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sensor-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sensor-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .sensor-name {
+            font-weight: 600;
+            color: #1E293B;
+        }
+
+        .sensor-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .sensor-status.online {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .sensor-status.offline {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .sensor-readings {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 16px;
+            flex: 1;
+        }
+
+        .reading {
+            text-align: center;
+            padding: 8px;
+            background: #F8FAFC;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .reading-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1E293B;
+            line-height: 1.2;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .reading-label {
+            font-size: 12px;
+            color: #6B7280;
+            margin-top: 4px;
+            line-height: 1.2;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .monitoring-main {
+                padding: 16px;
+            }
+
+            .sensors-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .sensor-card {
+                min-height: auto;
+                padding: 16px;
+            }
+
+            .sensor-readings {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .reading-value {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sensors-grid {
+                gap: 12px;
+            }
+
+            .sensor-card {
+                padding: 12px;
+            }
+
+            .reading {
+                padding: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-orbs">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+        <div class="gradient-orb orb-4"></div>
+        <div class="gradient-orb orb-5"></div>
+    </div>
+
+    <div class="monitoring-container">
+        <!-- Header -->
+        <header class="monitoring-header">
+            <div class="header-content">
+                <div class="header-title">
+                    <a href="index.html" class="back-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        Back to Home
+                    </a>
+                    <h1>🌊 Ocean Monitoring Dashboard</h1>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="monitoring-main">
+            <!-- Key Statistics -->
+            <section class="stats-grid">
+                <div class="stat-card ocean-temp">
+                    <div class="stat-header">
+                        <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1);">🌡️</div>
+                        <div class="stat-title">Ocean Temperature</div>
+                    </div>
+                    <div class="stat-value" id="ocean-temp">22.5°C</div>
+                    <div class="stat-change positive">
+                        <span>↗</span> +0.3°C from yesterday
+                    </div>
+                </div>
+
+                <div class="stat-card wave-height">
+                    <div class="stat-header">
+                        <div class="stat-icon" style="background: rgba(14, 165, 233, 0.1);">🌊</div>
+                        <div class="stat-title">Average Wave Height</div>
+                    </div>
+                    <div class="stat-value" id="wave-height">2.1m</div>
+                    <div class="stat-change negative">
+                        <span>↘</span> -0.2m from yesterday
+                    </div>
+                </div>
+
+                <div class="stat-card water-quality">
+                    <div class="stat-header">
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1);">💧</div>
+                        <div class="stat-title">Water Quality Index</div>
+                    </div>
+                    <div class="stat-value" id="water-quality">85</div>
+                    <div class="stat-change positive">
+                        <span>↗</span> +3 points from yesterday
+                    </div>
+                </div>
+
+                <div class="stat-card weather">
+                    <div class="stat-header">
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1);">☀️</div>
+                        <div class="stat-title">Weather Conditions</div>
+                    </div>
+                    <div class="stat-value" id="weather">Clear</div>
+                    <div class="stat-change positive">
+                        <span>↗</span> Improving conditions
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Grid -->
+            <section class="dashboard-grid">
+                <!-- Charts Section -->
+                <div class="chart-section">
+                    <div class="chart-header">
+                        <h2 class="chart-title">Wave Height Trends (24 Hours)</h2>
+                        <div class="time-selector">
+                            <button class="time-btn" onclick="setTimeRange('6h')">6H</button>
+                            <button class="time-btn active" onclick="setTimeRange('24h')">24H</button>
+                            <button class="time-btn" onclick="setTimeRange('7d')">7D</button>
+                            <button class="time-btn" onclick="setTimeRange('30d')">30D</button>
+                        </div>
+                    </div>
+                    <div class="chart-container" id="wave-chart">
+                        <!-- Chart bars will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Alerts Panel -->
+                <div class="alerts-panel">
+                    <div class="alerts-header">
+                        <span class="alerts-title">🚨 Active Monitoring Alerts</span>
+                    </div>
+                    <div id="monitoring-alerts">
+                        <!-- Alerts will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sensor Network -->
+            <section>
+                <h2 style="font-size: 24px; font-weight: 700; color: #1E293B; margin-bottom: 24px;">🛰️ Sensor Network Status</h2>
+                <div class="sensors-grid" id="sensors-grid">
+                    <!-- Sensor cards will be populated by JavaScript -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="monitoring-simple.js"></script>
+</body>
+</html>

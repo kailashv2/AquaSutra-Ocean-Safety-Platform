@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Analytics Dashboard - AquaSutra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <script>
+        // Redirect to enhanced version
+        window.location.href = 'analytics-enhanced.html';
+    </script>
+    <style>
+        .analytics-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f3f0ff 0%, #e9e2ff 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .analytics-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 25% 15%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 75% 85%, rgba(124, 58, 237, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 45% 50%, rgba(59, 130, 246, 0.04) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .analytics-header {
+            background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-title h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .ai-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
+            border-radius: 12px;
+        }
+
+        .ai-pulse {
+            width: 12px;
+            height: 12px;
+            background: #10B981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .analytics-main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .ai-insights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .insight-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 
+                0 8px 32px rgba(139, 92, 246, 0.1),
+                0 1px 2px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-left: 4px solid;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insight-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .insight-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 20px 40px rgba(139, 92, 246, 0.15),
+                0 8px 16px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .insight-card:hover::before {
+            opacity: 1;
+        }
+
+        .insight-card.prediction {
+            border-left-color: #8B5CF6;
+        }
+
+        .insight-card.risk-analysis {
+            border-left-color: #EF4444;
+        }
+
+        .insight-card.pattern-detection {
+            border-left-color: #3B82F6;
+        }
+
+        .insight-card.optimization {
+            border-left-color: #10B981;
+        }
+
+        .insight-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .insight-icon {
+            font-size: 32px;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .insight-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1E293B;
+        }
+
+        .insight-content {
+            margin-bottom: 16px;
+        }
+
+        .insight-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: #8B5CF6;
+            margin-bottom: 8px;
+        }
+
+        .insight-desc {
+            font-size: 14px;
+            color: #6B7280;
+            line-height: 1.5;
+        }
+
+        .confidence-bar {
+            width: 100%;
+            height: 8px;
+            background: #E5E7EB;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        .predictions-panel {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .panel-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1E293B;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .prediction-item {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border-left: 4px solid;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .prediction-item:hover {
+            transform: translateX(4px);
+        }
+
+        .prediction-item.high-confidence {
+            background: #F3F0FF;
+            border-left-color: #8B5CF6;
+        }
+
+        .prediction-item.medium-confidence {
+            background: #EFF6FF;
+            border-left-color: #3B82F6;
+        }
+
+        .prediction-item.low-confidence {
+            background: #FFFBEB;
+            border-left-color: #F59E0B;
+        }
+
+        .prediction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .prediction-title {
+            font-weight: 600;
+            color: #1E293B;
+        }
+
+        .confidence-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .confidence-badge.high {
+            background: #8B5CF6;
+            color: white;
+        }
+
+        .confidence-badge.medium {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .confidence-badge.low {
+            background: #F59E0B;
+            color: white;
+        }
+
+        .prediction-desc {
+            font-size: 14px;
+            color: #6B7280;
+            margin-bottom: 8px;
+        }
+
+        .prediction-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #9CA3AF;
+        }
+
+        .ml-models-panel {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .model-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .model-item:last-child {
+            border-bottom: none;
+        }
+
+        .model-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .model-icon {
+            font-size: 24px;
+        }
+
+        .model-name {
+            font-weight: 600;
+            color: #1E293B;
+        }
+
+        .model-type {
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        .model-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .model-status.active {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .model-status.training {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .model-status.idle {
+            background: #F1F5F9;
+            color: #475569;
+        }
+
+        .analytics-charts {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            grid-column: 1 / -1;
+        }
+
+        .chart-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .chart-tab {
+            padding: 8px 16px;
+            border: 1px solid #E5E7EB;
+            background: white;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .chart-tab.active {
+            background: #8B5CF6;
+            color: white;
+            border-color: #8B5CF6;
+        }
+
+        .chart-container {
+            height: 300px;
+            display: flex;
+            align-items: end;
+            gap: 8px;
+            padding: 20px 0;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+            border-radius: 4px 4px 0 0;
+            min-height: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+            transform: scaleY(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .analytics-main {
+                padding: 16px;
+            }
+
+            .ai-insights {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="analytics-container">
+        <!-- Header -->
+        <header class="analytics-header">
+            <div class="header-content">
+                <div class="header-title">
+                    <a href="index.html" class="back-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        Back to Home
+                    </a>
+                    <h1>🤖 AI Analytics Dashboard</h1>
+                </div>
+                <div class="ai-status">
+                    <div class="ai-pulse"></div>
+                    <span style="font-weight: 600;">AI Models Active</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="analytics-main">
+            <!-- AI Insights -->
+            <section class="ai-insights">
+                <div class="insight-card prediction">
+                    <div class="insight-header">
+                        <div class="insight-icon" style="background: rgba(139, 92, 246, 0.1);">🔮</div>
+                        <div class="insight-title">Predictive Analysis</div>
+                    </div>
+                    <div class="insight-content">
+                        <div class="insight-value" id="prediction-accuracy">94.2%</div>
+                        <div class="insight-desc">Average prediction accuracy for ocean hazards in the next 24 hours</div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 94.2%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insight-card risk-analysis">
+                    <div class="insight-header">
+                        <div class="insight-icon" style="background: rgba(239, 68, 68, 0.1);">⚠️</div>
+                        <div class="insight-title">Risk Assessment</div>
+                    </div>
+                    <div class="insight-content">
+                        <div class="insight-value" id="risk-score" style="color: #EF4444;">Medium</div>
+                        <div class="insight-desc">Current overall risk level based on multiple data sources and patterns</div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 67%; background: linear-gradient(135deg, #EF4444, #DC2626);"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insight-card pattern-detection">
+                    <div class="insight-header">
+                        <div class="insight-icon" style="background: rgba(59, 130, 246, 0.1);">🔍</div>
+                        <div class="insight-title">Pattern Detection</div>
+                    </div>
+                    <div class="insight-content">
+                        <div class="insight-value" id="patterns-found" style="color: #3B82F6;">7</div>
+                        <div class="insight-desc">Anomalous patterns detected in ocean behavior over the past week</div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 78%; background: linear-gradient(135deg, #3B82F6, #2563EB);"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insight-card optimization">
+                    <div class="insight-header">
+                        <div class="insight-icon" style="background: rgba(16, 185, 129, 0.1);">⚡</div>
+                        <div class="insight-title">Response Optimization</div>
+                    </div>
+                    <div class="insight-content">
+                        <div class="insight-value" id="optimization-score" style="color: #10B981;">87%</div>
+                        <div class="insight-desc">Emergency response efficiency improvement through AI recommendations</div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 87%; background: linear-gradient(135deg, #10B981, #059669);"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Grid -->
+            <section class="dashboard-grid">
+                <!-- Predictions Panel -->
+                <div class="predictions-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">🔮 AI Predictions</h2>
+                        <button onclick="refreshPredictions()" style="padding: 8px 16px; background: #8B5CF6; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 12px;">Refresh</button>
+                    </div>
+                    <div id="predictions-list">
+                        <!-- Predictions will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- ML Models Panel -->
+                <div class="ml-models-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">🧠 ML Models</h2>
+                    </div>
+                    <div id="models-list">
+                        <!-- Models will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Charts -->
+            <section class="analytics-charts">
+                <div class="panel-header">
+                    <h2 class="panel-title">📊 Analytics Visualization</h2>
+                    <div class="chart-tabs">
+                        <button class="chart-tab active" onclick="switchChart('accuracy')">Accuracy Trends</button>
+                        <button class="chart-tab" onclick="switchChart('predictions')">Prediction Volume</button>
+                        <button class="chart-tab" onclick="switchChart('performance')">Model Performance</button>
+                    </div>
+                </div>
+                <div class="chart-container" id="analytics-chart">
+                    <!-- Chart will be generated by JavaScript -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="analytics.js"></script>
+</body>
+</html>

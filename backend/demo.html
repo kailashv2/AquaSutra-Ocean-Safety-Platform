@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaSutra Enhanced Platform - Demo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 3em;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .feature-card h3 {
+            margin-top: 0;
+            color: #ffd700;
+        }
+        .api-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .api-endpoint {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+        .api-endpoint a {
+            color: #4fc3f7;
+            text-decoration: none;
+        }
+        .api-endpoint a:hover {
+            text-decoration: underline;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #4caf50;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .demo-data {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .btn {
+            background: #4fc3f7;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            background: #29b6f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌊 AquaSutra Enhanced Platform</h1>
+            <p>Comprehensive Ocean Safety Platform with Advanced AI & Social Media Integration</p>
+            <p><span class="status-indicator"></span>All Enhanced Features Active</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>🔐 Enhanced Role-Based Access</h3>
+                <p>5 distinct user roles with granular permissions:</p>
+                <ul>
+                    <li>Citizens - Report hazards</li>
+                    <li>Officials - Verify reports</li>
+                    <li>Analysts - Advanced analytics</li>
+                    <li>Emergency Responders - Crisis management</li>
+                    <li>Administrators - System control</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3>📱 Social Media Integration</h3>
+                <p>Real-time monitoring with NLP processing:</p>
+                <ul>
+                    <li>Twitter, Facebook, YouTube, Instagram</li>
+                    <li>Sentiment analysis & keyword extraction</li>
+                    <li>Hazard relevance scoring</li>
+                    <li>Multilingual content processing</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3>🔥 Dynamic Hotspot Generation</h3>
+                <p>Intelligent clustering system:</p>
+                <ul>
+                    <li>Report density analysis</li>
+                    <li>Social media activity integration</li>
+                    <li>Real-time intensity scoring</li>
+                    <li>Geographic clustering algorithms</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3>🌐 Multilingual Support</h3>
+                <p>Global accessibility features:</p>
+                <ul>
+                    <li>12 languages supported</li>
+                    <li>Automatic language detection</li>
+                    <li>Hazard keyword translation</li>
+                    <li>Localized date/time formatting</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3>📱 Offline Synchronization</h3>
+                <p>Complete offline capabilities:</p>
+                <ul>
+                    <li>Offline report creation</li>
+                    <li>Background synchronization</li>
+                    <li>Media file caching</li>
+                    <li>Conflict resolution</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3>⚠️ Early Warning Integration</h3>
+                <p>Real-time alert systems:</p>
+                <ul>
+                    <li>NOAA weather alerts</li>
+                    <li>USGS earthquake monitoring</li>
+                    <li>Tsunami warning systems</li>
+                    <li>WebSocket real-time feeds</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="api-section">
+            <h2>🔧 Enhanced API Endpoints</h2>
+            <p>Test the comprehensive API functionality:</p>
+            
+            <div class="api-endpoint">
+                <strong>Enhanced API Test:</strong><br>
+                <a href="/api/test" target="_blank">GET /api/test</a> - Complete feature overview
+            </div>
+
+            <div class="api-endpoint">
+                <strong>Analytics Dashboard:</strong><br>
+                <a href="/api/analytics/dashboard" target="_blank">GET /api/analytics/dashboard</a> - Real-time analytics
+            </div>
+
+            <div class="api-endpoint">
+                <strong>Social Media Monitoring:</strong><br>
+                <a href="/api/social/posts" target="_blank">GET /api/social/posts</a> - Social media data
+            </div>
+
+            <div class="api-endpoint">
+                <strong>Dynamic Hotspots:</strong><br>
+                <a href="/api/hotspots" target="_blank">GET /api/hotspots</a> - Geographic clustering
+            </div>
+
+            <div class="api-endpoint">
+                <strong>System Health:</strong><br>
+                <a href="/api/health" target="_blank">GET /api/health</a> - Service status monitoring
+            </div>
+        </div>
+
+        <div class="api-section">
+            <h2>📊 Live Demo Data</h2>
+            <p>Click the buttons below to load live data from the enhanced API:</p>
+            
+            <button class="btn" onclick="loadAnalytics()">Load Analytics</button>
+            <button class="btn" onclick="loadSocialMedia()">Load Social Media</button>
+            <button class="btn" onclick="loadHotspots()">Load Hotspots</button>
+            <button class="btn" onclick="loadHealth()">Load Health Status</button>
+            
+            <div id="demo-output" class="demo-data">
+                Click a button above to see live API responses...
+            </div>
+        </div>
+
+        <div class="api-section">
+            <h2>🚀 Real-time Features</h2>
+            <p>Socket.IO connection status: <span id="socket-status">Connecting...</span></p>
+            <div id="realtime-updates" class="demo-data">
+                Waiting for real-time updates...
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // Socket.IO connection
+        const socket = io();
+        
+        socket.on('connect', () => {
+            document.getElementById('socket-status').innerHTML = '<span class="status-indicator"></span>Connected';
+        });
+
+        socket.on('welcome', (data) => {
+            document.getElementById('realtime-updates').innerHTML = 
+                `<strong>Welcome Message:</strong><br>${JSON.stringify(data, null, 2)}`;
+        });
+
+        socket.on('disconnect', () => {
+            document.getElementById('socket-status').innerHTML = 'Disconnected';
+        });
+
+        // API Demo Functions
+        async function loadAnalytics() {
+            try {
+                const response = await fetch('/api/analytics/dashboard');
+                const data = await response.json();
+                document.getElementById('demo-output').innerHTML = 
+                    `<strong>Analytics Dashboard:</strong><br>${JSON.stringify(data, null, 2)}`;
+            } catch (error) {
+                document.getElementById('demo-output').innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        async function loadSocialMedia() {
+            try {
+                const response = await fetch('/api/social/posts');
+                const data = await response.json();
+                document.getElementById('demo-output').innerHTML = 
+                    `<strong>Social Media Posts:</strong><br>${JSON.stringify(data, null, 2)}`;
+            } catch (error) {
+                document.getElementById('demo-output').innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        async function loadHotspots() {
+            try {
+                const response = await fetch('/api/hotspots');
+                const data = await response.json();
+                document.getElementById('demo-output').innerHTML = 
+                    `<strong>Dynamic Hotspots:</strong><br>${JSON.stringify(data, null, 2)}`;
+            } catch (error) {
+                document.getElementById('demo-output').innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        async function loadHealth() {
+            try {
+                const response = await fetch('/api/health');
+                const data = await response.json();
+                document.getElementById('demo-output').innerHTML = 
+                    `<strong>System Health:</strong><br>${JSON.stringify(data, null, 2)}`;
+            } catch (error) {
+                document.getElementById('demo-output').innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        // Auto-load health status on page load
+        window.onload = () => {
+            loadHealth();
+        };
+    </script>
+</body>
+</html>

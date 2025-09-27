@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Hub - AquaSutra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        .community-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .community-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(16, 185, 129, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .community-header {
+            background: linear-gradient(135deg, #0EA5E9, #0284C7);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-title h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .community-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .hero-icon {
+            font-size: 80px;
+            margin-bottom: 24px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 800;
+            color: #1E293B;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #0EA5E9, #0284C7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: #64748B;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .community-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: #0EA5E9;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #64748B;
+            font-weight: 500;
+        }
+
+        .community-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-left: 4px solid;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .feature-card.discussions {
+            border-left-color: #3B82F6;
+        }
+
+        .feature-card.events {
+            border-left-color: #10B981;
+        }
+
+        .feature-card.knowledge {
+            border-left-color: #F59E0B;
+        }
+
+        .feature-card.connect {
+            border-left-color: #8B5CF6;
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            padding: 16px;
+            border-radius: 16px;
+            background: rgba(14, 165, 233, 0.1);
+        }
+
+        .feature-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1E293B;
+        }
+
+        .feature-description {
+            color: #64748B;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .feature-action {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #0EA5E9, #0284C7);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .feature-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.3);
+        }
+
+        .recent-activity {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .activity-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1E293B;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            background: #F8FAFC;
+            transition: all 0.2s ease;
+        }
+
+        .activity-item:hover {
+            background: #E2E8F0;
+            transform: translateX(4px);
+        }
+
+        .activity-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0EA5E9, #0284C7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-user {
+            font-weight: 600;
+            color: #1E293B;
+            margin-bottom: 4px;
+        }
+
+        .activity-action {
+            color: #64748B;
+            font-size: 14px;
+        }
+
+        .activity-time {
+            color: #9CA3AF;
+            font-size: 12px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 768px) {
+            .community-features {
+                grid-template-columns: 1fr;
+            }
+
+            .community-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .recent-activity {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="community-container">
+        <!-- Header -->
+        <header class="community-header">
+            <div class="header-content">
+                <div class="header-title">
+                    <a href="index.html" class="back-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        Back to Home
+                    </a>
+                    <h1>🌐 Community Hub</h1>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="community-main">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-icon">👥</div>
+                <h1 class="hero-title">Community Hub</h1>
+                <p class="hero-subtitle">
+                    Connect with ocean safety professionals, share knowledge, and collaborate on coastal protection initiatives. 
+                    Join our growing community of maritime safety experts and enthusiasts.
+                </p>
+            </section>
+
+            <!-- Community Stats -->
+            <section class="community-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-members">2,847</div>
+                    <div class="stat-label">Active Members</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="discussions">156</div>
+                    <div class="stat-label">Active Discussions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="events">23</div>
+                    <div class="stat-label">Upcoming Events</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="resources">489</div>
+                    <div class="stat-label">Shared Resources</div>
+                </div>
+            </section>
+
+            <!-- Community Features -->
+            <section class="community-features">
+                <div class="feature-card discussions" onclick="joinDiscussions()">
+                    <div class="feature-header">
+                        <div class="feature-icon" style="background: rgba(59, 130, 246, 0.1);">💬</div>
+                        <div class="feature-title">Discussion Forums</div>
+                    </div>
+                    <div class="feature-description">
+                        Engage in meaningful conversations about ocean safety, share experiences, and get expert advice from maritime professionals.
+                    </div>
+                    <button class="feature-action">Join Discussions</button>
+                </div>
+
+                <div class="feature-card events" onclick="viewEvents()">
+                    <div class="feature-header">
+                        <div class="feature-icon" style="background: rgba(16, 185, 129, 0.1);">📅</div>
+                        <div class="feature-title">Events & Webinars</div>
+                    </div>
+                    <div class="feature-description">
+                        Participate in virtual events, training sessions, and webinars led by ocean safety experts and industry leaders.
+                    </div>
+                    <button class="feature-action">View Events</button>
+                </div>
+
+                <div class="feature-card knowledge" onclick="accessKnowledge()">
+                    <div class="feature-header">
+                        <div class="feature-icon" style="background: rgba(245, 158, 11, 0.1);">📚</div>
+                        <div class="feature-title">Knowledge Base</div>
+                    </div>
+                    <div class="feature-description">
+                        Access community-contributed articles, case studies, and best practices for ocean safety and coastal management.
+                    </div>
+                    <button class="feature-action">Explore Knowledge</button>
+                </div>
+
+                <div class="feature-card connect" onclick="connectExperts()">
+                    <div class="feature-header">
+                        <div class="feature-icon" style="background: rgba(139, 92, 246, 0.1);">🤝</div>
+                        <div class="feature-title">Expert Network</div>
+                    </div>
+                    <div class="feature-description">
+                        Connect directly with ocean safety professionals, researchers, and government officials in your area.
+                    </div>
+                    <button class="feature-action">Connect with Experts</button>
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="recent-activity">
+                <h2 class="activity-title">🔥 Recent Community Activity</h2>
+                <div id="activity-feed">
+                    <div class="activity-item">
+                        <div class="activity-avatar">SM</div>
+                        <div class="activity-content">
+                            <div class="activity-user">Sarah Martinez</div>
+                            <div class="activity-action">shared a new case study on rip current detection</div>
+                        </div>
+                        <div class="activity-time">2 hours ago</div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-avatar">DJ</div>
+                        <div class="activity-content">
+                            <div class="activity-user">Dr. James Wilson</div>
+                            <div class="activity-action">started a discussion on AI-powered wave prediction</div>
+                        </div>
+                        <div class="activity-time">4 hours ago</div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-avatar">LT</div>
+                        <div class="activity-content">
+                            <div class="activity-user">Lisa Thompson</div>
+                            <div class="activity-action">uploaded new training materials for lifeguards</div>
+                        </div>
+                        <div class="activity-time">6 hours ago</div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-avatar">MR</div>
+                        <div class="activity-content">
+                            <div class="activity-user">Mike Rodriguez</div>
+                            <div class="activity-action">announced upcoming webinar on emergency response protocols</div>
+                        </div>
+                        <div class="activity-time">1 day ago</div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-avatar">EK</div>
+                        <div class="activity-content">
+                            <div class="activity-user">Emily Kim</div>
+                            <div class="activity-action">shared photos from coastal safety training exercise</div>
+                        </div>
+                        <div class="activity-time">2 days ago</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🌐 Community Hub Loading...');
+            
+            // Animate elements on load
+            setTimeout(() => {
+                const elements = document.querySelectorAll('.hero-section, .community-stats, .community-features, .recent-activity');
+                elements.forEach((element, index) => {
+                    element.style.opacity = '0';
+                    element.style.transform = 'translateY(40px)';
+                    element.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                    
+                    setTimeout(() => {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }, index * 200);
+                });
+            }, 100);
+
+            // Simulate real-time stats updates
+            setInterval(() => {
+                updateCommunityStats();
+            }, 30000);
+
+            console.log('✅ Community Hub Ready!');
+        });
+
+        function updateCommunityStats() {
+            // Simulate small increases in community stats
+            const stats = [
+                { id: 'total-members', increment: Math.floor(Math.random() * 3) },
+                { id: 'discussions', increment: Math.floor(Math.random() * 2) },
+                { id: 'resources', increment: Math.floor(Math.random() * 2) }
+            ];
+
+            stats.forEach(stat => {
+                const element = document.getElementById(stat.id);
+                if (element && stat.increment > 0) {
+                    const currentValue = parseInt(element.textContent.replace(/,/g, ''));
+                    const newValue = currentValue + stat.increment;
+                    element.textContent = newValue.toLocaleString();
+                    
+                    // Highlight the update
+                    element.style.color = '#10B981';
+                    setTimeout(() => {
+                        element.style.color = '#0EA5E9';
+                    }, 1000);
+                }
+            });
+        }
+
+        function joinDiscussions() {
+            showNotification('💬 Redirecting to community discussion forums...', 'info');
+        }
+
+        function viewEvents() {
+            showNotification('📅 Opening upcoming events and webinars...', 'info');
+        }
+
+        function accessKnowledge() {
+            showNotification('📚 Accessing community knowledge base...', 'info');
+        }
+
+        function connectExperts() {
+            showNotification('🤝 Opening expert network directory...', 'info');
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 16px 20px;
+                border-radius: 12px;
+                color: white;
+                font-weight: 500;
+                z-index: 10000;
+                animation: slideInRight 0.3s ease;
+                max-width: 350px;
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+                font-family: 'Inter', sans-serif;
+            `;
+            
+            switch (type) {
+                case 'success':
+                    notification.style.background = 'linear-gradient(135deg, #10B981, #059669)';
+                    break;
+                case 'error':
+                    notification.style.background = 'linear-gradient(135deg, #EF4444, #DC2626)';
+                    break;
+                case 'warning':
+                    notification.style.background = 'linear-gradient(135deg, #F59E0B, #D97706)';
+                    break;
+                default:
+                    notification.style.background = 'linear-gradient(135deg, #0EA5E9, #0284C7)';
+            }
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 4000);
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

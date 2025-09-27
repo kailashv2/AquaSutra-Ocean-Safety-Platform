@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Dashboard - AquaSutra</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="premium-dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">🌊</span>
+                    <span class="logo-text">AquaSutra</span>
+                </div>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="#overview" class="nav-item active">
+                    <span class="nav-icon">📊</span>
+                    <span>Overview</span>
+                </a>
+                <a href="#reports" class="nav-item">
+                    <span class="nav-icon">📝</span>
+                    <span>Reports</span>
+                </a>
+                <a href="#analytics" class="nav-item">
+                    <span class="nav-icon">📈</span>
+                    <span>Analytics</span>
+                </a>
+                <a href="#alerts" class="nav-item">
+                    <span class="nav-icon">🚨</span>
+                    <span>Alerts</span>
+                </a>
+                <a href="#social" class="nav-item">
+                    <span class="nav-icon">📱</span>
+                    <span>Social Media</span>
+                </a>
+                <a href="#settings" class="nav-item">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1>Ocean Safety Dashboard</h1>
+                    <p>Real-time monitoring and analytics</p>
+                </div>
+                <div class="header-right">
+                    <div class="search-box">
+                        <input type="text" placeholder="Search reports, alerts...">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                    <div class="user-profile">
+                        <img src="https://via.placeholder.com/40" alt="Profile">
+                        <div class="user-info">
+                            <span class="user-name">John Doe</span>
+                            <span class="user-role">Emergency Responder</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Stats Grid -->
+            <section class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-icon">🌊</div>
+                    <div class="stat-content">
+                        <h3>Active Alerts</h3>
+                        <div class="stat-number">12</div>
+                        <div class="stat-change positive">+3 from yesterday</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card success">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-content">
+                        <h3>Verified Reports</h3>
+                        <div class="stat-number">847</div>
+                        <div class="stat-change positive">+15% this week</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card warning">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-content">
+                        <h3>Pending Reviews</h3>
+                        <div class="stat-number">23</div>
+                        <div class="stat-change negative">-5 from yesterday</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card info">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-content">
+                        <h3>Active Users</h3>
+                        <div class="stat-number">1,234</div>
+                        <div class="stat-change positive">+8% this month</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts and Analytics -->
+            <section class="analytics-section">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Hazard Trends</h3>
+                        <div class="chart-controls">
+                            <button class="btn-small active">7D</button>
+                            <button class="btn-small">30D</button>
+                            <button class="btn-small">90D</button>
+                        </div>
+                    </div>
+                    <div class="chart-area">
+                        <canvas id="hazardChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="map-container">
+                    <div class="map-header">
+                        <h3>Live Hazard Map</h3>
+                        <div class="map-controls">
+                            <button class="btn-small">Refresh</button>
+                            <button class="btn-small">Fullscreen</button>
+                        </div>
+                    </div>
+                    <div id="liveMap" class="live-map"></div>
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="activity-section">
+                <div class="activity-header">
+                    <h3>Recent Activity</h3>
+                    <button class="btn-secondary">View All</button>
+                </div>
+                
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon tsunami">🌊</div>
+                        <div class="activity-content">
+                            <h4>Tsunami Warning Issued</h4>
+                            <p>Pacific Coast - Magnitude 7.2 earthquake detected</p>
+                            <span class="activity-time">2 minutes ago</span>
+                        </div>
+                        <div class="activity-status critical">Critical</div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon storm">⛈️</div>
+                        <div class="activity-content">
+                            <h4>Storm Alert Updated</h4>
+                            <p>Hurricane Category 3 approaching Florida Keys</p>
+                            <span class="activity-time">15 minutes ago</span>
+                        </div>
+                        <div class="activity-status high">High</div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon report">📝</div>
+                        <div class="activity-content">
+                            <h4>New Citizen Report</h4>
+                            <p>Unusual wave patterns reported in Miami Beach</p>
+                            <span class="activity-time">1 hour ago</span>
+                        </div>
+                        <div class="activity-status medium">Medium</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="premium-dashboard.js"></script>
+    <script src="dashboard-navigation-fix.js"></script>
+    <script src="overview-fix.js"></script>
+</body>
+</html>

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - AquaSutra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        .api-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .api-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(37, 99, 235, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 50% 10%, rgba(16, 185, 129, 0.04) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .api-header {
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-title h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .api-main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .hero-icon {
+            font-size: 80px;
+            margin-bottom: 24px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 800;
+            color: #1E293B;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: #64748B;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .api-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .api-sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1E293B;
+            margin-bottom: 16px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 8px 12px;
+            color: #64748B;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .api-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .endpoint-section {
+            margin-bottom: 40px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .endpoint-section:last-child {
+            border-bottom: none;
+        }
+
+        .endpoint-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1E293B;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .method-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .method-get {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .method-post {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .method-put {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .method-delete {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .endpoint-url {
+            background: #F8FAFC;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+            margin-bottom: 16px;
+            word-break: break-all;
+        }
+
+        .endpoint-description {
+            color: #64748B;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .code-block {
+            background: #1E293B;
+            color: #F8FAFC;
+            border-radius: 12px;
+            padding: 20px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 16px 0;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: attr(data-language);
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            font-size: 12px;
+            color: #94A3B8;
+            text-transform: uppercase;
+        }
+
+        .params-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+
+        .params-table th,
+        .params-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .params-table th {
+            background: #F8FAFC;
+            font-weight: 600;
+            color: #1E293B;
+        }
+
+        .params-table td {
+            color: #64748B;
+        }
+
+        .param-required {
+            color: #EF4444;
+            font-weight: 600;
+        }
+
+        .param-optional {
+            color: #10B981;
+            font-weight: 600;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 768px) {
+            .api-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .api-sidebar {
+                position: static;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .api-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="api-container">
+        <!-- Header -->
+        <header class="api-header">
+            <div class="header-content">
+                <div class="header-title">
+                    <a href="index.html" class="back-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        Back to Home
+                    </a>
+                    <h1>📚 API Documentation</h1>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="api-main">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-icon">🔌</div>
+                <h1 class="hero-title">AquaSutra API Documentation</h1>
+                <p class="hero-subtitle">
+                    Comprehensive API documentation for integrating with AquaSutra's ocean safety platform. 
+                    Access real-time hazard data, submit reports, and build powerful ocean safety applications.
+                </p>
+            </section>
+
+            <!-- API Grid -->
+            <div class="api-grid">
+                <!-- Sidebar -->
+                <div class="api-sidebar">
+                    <h3 class="sidebar-title">API Endpoints</h3>
+                    <ul class="sidebar-nav">
+                        <li><a href="#authentication" class="active">Authentication</a></li>
+                        <li><a href="#hazards">Hazard Data</a></li>
+                        <li><a href="#reports">Submit Reports</a></li>
+                        <li><a href="#monitoring">Monitoring</a></li>
+                        <li><a href="#emergency">Emergency</a></li>
+                        <li><a href="#analytics">Analytics</a></li>
+                        <li><a href="#webhooks">Webhooks</a></li>
+                    </ul>
+                </div>
+
+                <!-- Content -->
+                <div class="api-content">
+                    <!-- Authentication -->
+                    <section id="authentication" class="endpoint-section">
+                        <h2 class="endpoint-title">
+                            <span class="method-badge method-post">POST</span>
+                            Authentication
+                        </h2>
+                        <div class="endpoint-url">https://api.aquasutra.com/v1/auth/token</div>
+                        <p class="endpoint-description">
+                            Obtain an API access token for authenticated requests. All API calls require a valid Bearer token.
+                        </p>
+                        
+                        <h4>Request Body</h4>
+                        <div class="code-block" data-language="json">{
+  "api_key": "your_api_key_here",
+  "secret": "your_secret_key_here"
+}</div>
+
+                        <h4>Response</h4>
+                        <div class="code-block" data-language="json">{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "Bearer",
+  "expires_in": 3600
+}</div>
+                    </section>
+
+                    <!-- Hazard Data -->
+                    <section id="hazards" class="endpoint-section">
+                        <h2 class="endpoint-title">
+                            <span class="method-badge method-get">GET</span>
+                            Get Hazard Data
+                        </h2>
+                        <div class="endpoint-url">https://api.aquasutra.com/v1/hazards</div>
+                        <p class="endpoint-description">
+                            Retrieve real-time ocean hazard data including location, severity, and type information.
+                        </p>
+
+                        <h4>Query Parameters</h4>
+                        <table class="params-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>lat</td>
+                                    <td>float</td>
+                                    <td class="param-optional">Optional</td>
+                                    <td>Latitude for location-based filtering</td>
+                                </tr>
+                                <tr>
+                                    <td>lng</td>
+                                    <td>float</td>
+                                    <td class="param-optional">Optional</td>
+                                    <td>Longitude for location-based filtering</td>
+                                </tr>
+                                <tr>
+                                    <td>radius</td>
+                                    <td>integer</td>
+                                    <td class="param-optional">Optional</td>
+                                    <td>Search radius in kilometers (default: 50)</td>
+                                </tr>
+                                <tr>
+                                    <td>severity</td>
+                                    <td>string</td>
+                                    <td class="param-optional">Optional</td>
+                                    <td>Filter by severity: low, medium, high</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4>Response</h4>
+                        <div class="code-block" data-language="json">{
+  "hazards": [
+    {
+      "id": "HAZ-001",
+      "type": "high_waves",
+      "severity": "high",
+      "location": {
+        "lat": 40.7128,
+        "lng": -74.0060,
+        "name": "New York Harbor"
+      },
+      "description": "Wave heights exceeding 3.5 meters",
+      "timestamp": "2024-01-15T10:30:00Z",
+      "active": true
+    }
+  ],
+  "total": 1,
+  "page": 1
+}</div>
+                    </section>
+
+                    <!-- Submit Reports -->
+                    <section id="reports" class="endpoint-section">
+                        <h2 class="endpoint-title">
+                            <span class="method-badge method-post">POST</span>
+                            Submit Hazard Report
+                        </h2>
+                        <div class="endpoint-url">https://api.aquasutra.com/v1/reports</div>
+                        <p class="endpoint-description">
+                            Submit a new hazard report to the AquaSutra platform for review and processing.
+                        </p>
+
+                        <h4>Request Body</h4>
+                        <div class="code-block" data-language="json">{
+  "hazard_type": "high_waves",
+  "severity": "high",
+  "location": {
+    "lat": 40.7128,
+    "lng": -74.0060,
+    "description": "Miami Beach, FL"
+  },
+  "description": "Dangerous wave conditions observed",
+  "reporter": {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "phone": "+1234567890"
+  }
+}</div>
+
+                        <h4>Response</h4>
+                        <div class="code-block" data-language="json">{
+  "report_id": "RPT-001",
+  "status": "submitted",
+  "message": "Report submitted successfully",
+  "estimated_review_time": "15 minutes"
+}</div>
+                    </section>
+
+                    <!-- Monitoring -->
+                    <section id="monitoring" class="endpoint-section">
+                        <h2 class="endpoint-title">
+                            <span class="method-badge method-get">GET</span>
+                            Monitoring Data
+                        </h2>
+                        <div class="endpoint-url">https://api.aquasutra.com/v1/monitoring/sensors</div>
+                        <p class="endpoint-description">
+                            Access real-time data from ocean monitoring sensors including temperature, wave height, and water quality.
+                        </p>
+
+                        <h4>Response</h4>
+                        <div class="code-block" data-language="json">{
+  "sensors": [
+    {
+      "id": "NYC-001",
+      "name": "New York Harbor Buoy",
+      "location": {
+        "lat": 40.7128,
+        "lng": -74.0060
+      },
+      "status": "online",
+      "readings": {
+        "temperature": 22.5,
+        "wave_height": 1.8,
+        "wind_speed": 12,
+        "water_quality": 88
+      },
+      "last_update": "2024-01-15T10:30:00Z"
+    }
+  ]
+}</div>
+                    </section>
+
+                    <!-- Emergency -->
+                    <section id="emergency" class="endpoint-section">
+                        <h2 class="endpoint-title">
+                            <span class="method-badge method-post">POST</span>
+                            Emergency Alert
+                        </h2>
+                        <div class="endpoint-url">https://api.aquasutra.com/v1/emergency/alert</div>
+                        <p class="endpoint-description">
+                            Submit an emergency alert for immediate response coordination.
+                        </p>
+
+                        <h4>Request Body</h4>
+                        <div class="code-block" data-language="json">{
+  "emergency_type": "person_in_water",
+  "priority": "critical",
+  "location": {
+    "lat": 40.7128,
+    "lng": -74.0060,
+    "description": "Miami Beach, FL"
+  },
+  "description": "Person in distress in water",
+  "contact": {
+    "phone": "+1234567890",
+    "name": "Emergency Caller"
+  }
+}</div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Simple navigation highlighting
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.sidebar-nav a');
+            const sections = document.querySelectorAll('.endpoint-section');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                        
+                        // Update active state
+                        navLinks.forEach(l => l.classList.remove('active'));
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            // Animate elements on load
+            setTimeout(() => {
+                const elements = document.querySelectorAll('.hero-section, .api-grid');
+                elements.forEach((element, index) => {
+                    element.style.opacity = '0';
+                    element.style.transform = 'translateY(40px)';
+                    element.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                    
+                    setTimeout(() => {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }, index * 200);
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>

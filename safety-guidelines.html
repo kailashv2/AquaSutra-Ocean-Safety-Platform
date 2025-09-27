@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ocean Safety Guidelines - AquaSutra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        .guidelines-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .guidelines-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(37, 99, 235, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.04) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .guidelines-header {
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-title h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .guidelines-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .hero-icon {
+            font-size: 80px;
+            margin-bottom: 24px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 800;
+            color: #1E293B;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: #64748B;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .guidelines-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .guideline-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 
+                0 8px 32px rgba(59, 130, 246, 0.1),
+                0 1px 2px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-left: 4px solid;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .guideline-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .guideline-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 20px 40px rgba(59, 130, 246, 0.15),
+                0 8px 16px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .guideline-card:hover::before {
+            opacity: 1;
+        }
+
+        .guideline-card.swimming {
+            border-left-color: #3B82F6;
+        }
+
+        .guideline-card.boating {
+            border-left-color: #0EA5E9;
+        }
+
+        .guideline-card.emergency {
+            border-left-color: #EF4444;
+        }
+
+        .guideline-card.weather {
+            border-left-color: #F59E0B;
+        }
+
+        .guideline-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .guideline-icon {
+            font-size: 40px;
+            padding: 16px;
+            border-radius: 16px;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .guideline-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1E293B;
+        }
+
+        .guideline-description {
+            color: #64748B;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .guideline-tips {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .guideline-tips li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: #374151;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .emergency-section {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(220, 38, 38, 0.05));
+            border: 2px solid rgba(239, 68, 68, 0.2);
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .emergency-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #DC2626;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .emergency-description {
+            color: #7F1D1D;
+            margin-bottom: 24px;
+            line-height: 1.6;
+            font-size: 18px;
+        }
+
+        .emergency-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .emergency-btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+        }
+
+        .emergency-btn.primary {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white;
+        }
+
+        .emergency-btn.secondary {
+            background: rgba(239, 68, 68, 0.1);
+            color: #DC2626;
+            border: 2px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .emergency-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+        }
+
+        .detailed-guidelines {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .detailed-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1E293B;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .guideline-section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1E293B;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .guideline-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .guideline-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 12px;
+            background: #F8FAFC;
+            border-radius: 8px;
+            border-left: 4px solid #3B82F6;
+        }
+
+        .guideline-list .icon {
+            font-size: 18px;
+            margin-top: 2px;
+        }
+
+        .guideline-list .text {
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 768px) {
+            .guidelines-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .detailed-guidelines {
+                padding: 24px;
+            }
+
+            .emergency-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .emergency-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="guidelines-container">
+        <!-- Header -->
+        <header class="guidelines-header">
+            <div class="header-content">
+                <div class="header-title">
+                    <a href="index.html" class="back-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        Back to Home
+                    </a>
+                    <h1>🛡️ Ocean Safety Guidelines</h1>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="guidelines-main">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-icon">🌊</div>
+                <h1 class="hero-title">Ocean Safety Guidelines</h1>
+                <p class="hero-subtitle">
+                    Comprehensive safety guidelines and best practices for ocean activities. 
+                    Stay safe and informed with expert recommendations for swimming, boating, and coastal recreation.
+                </p>
+            </section>
+
+            <!-- Emergency Section -->
+            <section class="emergency-section">
+                <h2 class="emergency-title">
+                    🚨 Emergency Situations
+                </h2>
+                <p class="emergency-description">
+                    In case of a life-threatening emergency, always call 911 first. 
+                    For non-emergency ocean safety concerns, use our reporting system.
+                </p>
+                <div class="emergency-actions">
+                    <button class="emergency-btn primary" onclick="call911()">
+                        📞 Call 911
+                    </button>
+                    <button class="emergency-btn secondary" onclick="window.location.href='report-hazard.html'">
+                        ⚠️ Report Hazard
+                    </button>
+                </div>
+            </section>
+
+            <!-- Guidelines Categories -->
+            <section class="guidelines-grid">
+                <div class="guideline-card swimming" onclick="showSwimmingGuidelines()">
+                    <div class="guideline-header">
+                        <div class="guideline-icon" style="background: rgba(59, 130, 246, 0.1);">🏊‍♂️</div>
+                        <div class="guideline-title">Swimming Safety</div>
+                    </div>
+                    <div class="guideline-description">
+                        Essential safety guidelines for swimming in oceans, lakes, and coastal waters.
+                    </div>
+                    <ul class="guideline-tips">
+                        <li>✅ Always swim with a buddy</li>
+                        <li>✅ Check water conditions before entering</li>
+                        <li>✅ Stay within designated swimming areas</li>
+                        <li>✅ Be aware of rip currents and undertows</li>
+                        <li>✅ Know your swimming limits</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card boating" onclick="showBoatingGuidelines()">
+                    <div class="guideline-header">
+                        <div class="guideline-icon" style="background: rgba(14, 165, 233, 0.1);">🚤</div>
+                        <div class="guideline-title">Boating Safety</div>
+                    </div>
+                    <div class="guideline-description">
+                        Comprehensive safety protocols for recreational and commercial boating activities.
+                    </div>
+                    <ul class="guideline-tips">
+                        <li>✅ Wear life jackets at all times</li>
+                        <li>✅ Check weather conditions before departure</li>
+                        <li>✅ File a float plan with someone on shore</li>
+                        <li>✅ Carry emergency communication devices</li>
+                        <li>✅ Maintain proper safety equipment</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card emergency" onclick="showEmergencyGuidelines()">
+                    <div class="guideline-header">
+                        <div class="guideline-icon" style="background: rgba(239, 68, 68, 0.1);">🆘</div>
+                        <div class="guideline-title">Emergency Procedures</div>
+                    </div>
+                    <div class="guideline-description">
+                        Critical emergency response procedures for water-related incidents and rescues.
+                    </div>
+                    <ul class="guideline-tips">
+                        <li>✅ Call 911 for life-threatening emergencies</li>
+                        <li>✅ Learn basic water rescue techniques</li>
+                        <li>✅ Know CPR and first aid procedures</li>
+                        <li>✅ Understand distress signals</li>
+                        <li>✅ Have emergency contact information ready</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card weather" onclick="showWeatherGuidelines()">
+                    <div class="guideline-header">
+                        <div class="guideline-icon" style="background: rgba(245, 158, 11, 0.1);">🌦️</div>
+                        <div class="guideline-title">Weather Awareness</div>
+                    </div>
+                    <div class="guideline-description">
+                        Understanding weather patterns and conditions that affect ocean safety and activities.
+                    </div>
+                    <ul class="guideline-tips">
+                        <li>✅ Monitor weather forecasts regularly</li>
+                        <li>✅ Understand warning flags and signals</li>
+                        <li>✅ Recognize dangerous weather patterns</li>
+                        <li>✅ Know when to seek shelter</li>
+                        <li>✅ Plan activities around weather conditions</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Detailed Guidelines -->
+            <section class="detailed-guidelines">
+                <h2 class="detailed-title">📋 Comprehensive Safety Guidelines</h2>
+                
+                <div class="guideline-section">
+                    <h3 class="section-title">🏊‍♂️ Before Entering the Water</h3>
+                    <ul class="guideline-list">
+                        <li>
+                            <span class="icon">🔍</span>
+                            <span class="text">Check local conditions, weather forecasts, and any posted warnings or advisories</span>
+                        </li>
+                        <li>
+                            <span class="icon">👥</span>
+                            <span class="text">Never swim alone - always use the buddy system for safety</span>
+                        </li>
+                        <li>
+                            <span class="icon">🏖️</span>
+                            <span class="text">Choose lifeguarded beaches when possible and swim in designated areas</span>
+                        </li>
+                        <li>
+                            <span class="icon">💪</span>
+                            <span class="text">Assess your swimming ability honestly and stay within your limits</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="guideline-section">
+                    <h3 class="section-title">🌊 Understanding Ocean Hazards</h3>
+                    <ul class="guideline-list">
+                        <li>
+                            <span class="icon">🌀</span>
+                            <span class="text">Rip currents: Look for channels of churning, discolored water moving seaward</span>
+                        </li>
+                        <li>
+                            <span class="icon">🌊</span>
+                            <span class="text">Large waves: Can knock you down and cause injuries - respect wave power</span>
+                        </li>
+                        <li>
+                            <span class="icon">🐠</span>
+                            <span class="text">Marine life: Be aware of local wildlife and maintain respectful distance</span>
+                        </li>
+                        <li>
+                            <span class="icon">🪨</span>
+                            <span class="text">Underwater hazards: Watch for rocks, reefs, and sudden depth changes</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="guideline-section">
+                    <h3 class="section-title">🚤 Boating Best Practices</h3>
+                    <ul class="guideline-list">
+                        <li>
+                            <span class="icon">🦺</span>
+                            <span class="text">Ensure all passengers wear properly fitted life jackets at all times</span>
+                        </li>
+                        <li>
+                            <span class="icon">📋</span>
+                            <span class="text">File a float plan with departure/return times and intended route</span>
+                        </li>
+                        <li>
+                            <span class="icon">📡</span>
+                            <span class="text">Carry VHF radio, flares, and other required safety equipment</span>
+                        </li>
+                        <li>
+                            <span class="icon">⛽</span>
+                            <span class="text">Check fuel levels, engine condition, and weather before departure</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="guideline-section">
+                    <h3 class="section-title">🆘 Emergency Response</h3>
+                    <ul class="guideline-list">
+                        <li>
+                            <span class="icon">📞</span>
+                            <span class="text">Call 911 immediately for any life-threatening emergency</span>
+                        </li>
+                        <li>
+                            <span class="icon">🛟</span>
+                            <span class="text">If someone is drowning: Throw, don't go - use flotation devices</span>
+                        </li>
+                        <li>
+                            <span class="icon">🫁</span>
+                            <span class="text">Learn CPR and basic first aid - these skills save lives</span>
+                        </li>
+                        <li>
+                            <span class="icon">📍</span>
+                            <span class="text">Know your exact location to provide to emergency responders</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🛡️ Ocean Safety Guidelines Loading...');
+            
+            // Animate elements on load
+            setTimeout(() => {
+                const elements = document.querySelectorAll('.hero-section, .emergency-section, .guidelines-grid, .detailed-guidelines');
+                elements.forEach((element, index) => {
+                    element.style.opacity = '0';
+                    element.style.transform = 'translateY(40px)';
+                    element.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                    
+                    setTimeout(() => {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }, index * 200);
+                });
+            }, 100);
+
+            console.log('✅ Ocean Safety Guidelines Ready!');
+        });
+
+        function call911() {
+            alert('🚨 EMERGENCY: Call 911 immediately for life-threatening situations.\n\nThis is a demonstration. In a real emergency, dial 911 from your phone.');
+        }
+
+        function showSwimmingGuidelines() {
+            showNotification('🏊‍♂️ Swimming safety guidelines - Always swim with a buddy and check conditions', 'info');
+        }
+
+        function showBoatingGuidelines() {
+            showNotification('🚤 Boating safety guidelines - Wear life jackets and file a float plan', 'info');
+        }
+
+        function showEmergencyGuidelines() {
+            showNotification('🆘 Emergency procedures - Call 911 for life-threatening situations', 'error');
+        }
+
+        function showWeatherGuidelines() {
+            showNotification('🌦️ Weather awareness - Monitor forecasts and understand warning signals', 'warning');
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 16px 20px;
+                border-radius: 12px;
+                color: white;
+                font-weight: 500;
+                z-index: 10000;
+                animation: slideInRight 0.3s ease;
+                max-width: 350px;
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+                font-family: 'Inter', sans-serif;
+            `;
+            
+            switch (type) {
+                case 'success':
+                    notification.style.background = 'linear-gradient(135deg, #10B981, #059669)';
+                    break;
+                case 'error':
+                    notification.style.background = 'linear-gradient(135deg, #EF4444, #DC2626)';
+                    break;
+                case 'warning':
+                    notification.style.background = 'linear-gradient(135deg, #F59E0B, #D97706)';
+                    break;
+                default:
+                    notification.style.background = 'linear-gradient(135deg, #3B82F6, #2563EB)';
+            }
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 4000);
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

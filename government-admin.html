@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Admin Interface - AquaSutra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        /* Government Admin Interface Styles */
+        .admin-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 1) 0%, 
+                rgba(248, 250, 252, 0.95) 25%,
+                rgba(243, 240, 255, 0.8) 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .admin-container::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 25% 15%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 75% 85%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 45% 50%, rgba(14, 165, 233, 0.04) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Floating Orbs */
+        .floating-orbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            animation: float 20s infinite ease-in-out;
+            opacity: 0.6;
+        }
+
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+            top: -150px;
+            left: -150px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #06B6D4, #10B981);
+            top: 20%;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, #F59E0B, #EF4444);
+            bottom: -125px;
+            left: 30%;
+            animation-delay: -10s;
+        }
+
+        .orb-4 {
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+            top: 60%;
+            right: 20%;
+            animation-delay: -15s;
+        }
+
+        .orb-5 {
+            width: 220px;
+            height: 220px;
+            background: linear-gradient(135deg, #10B981, #06B6D4);
+            top: 40%;
+            left: 10%;
+            animation-delay: -7s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            33% { transform: translateY(-30px) rotate(120deg) scale(1.1); }
+            66% { transform: translateY(20px) rotate(240deg) scale(0.9); }
+        }
+
+        /* Enhanced Admin Header */
+        .admin-header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.3);
+            padding: 1.25rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 
+                0 1px 3px rgba(0, 0, 0, 0.05),
+                0 8px 32px rgba(59, 130, 246, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #3B82F6, #8B5CF6, #06B6D4, #10B981);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-title {
+            font-size: 1.75rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1E40AF, #3B82F6, #8B5CF6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .admin-title::before {
+            content: '🏛️';
+            font-size: 1.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(229, 231, 235, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            min-width: 280px;
+        }
+
+        .user-info:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .user-info:hover .user-avatar {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1F2937;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: #6B7280;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            color: #10B981;
+            font-weight: 500;
+        }
+
+        .user-status::before {
+            content: '•';
+            color: #10B981;
+            font-size: 8px;
+        }
+
+        .logout-btn {
+            background: #F3F4F6;
+            color: #6B7280;
+            border: 1px solid rgba(229, 231, 235, 0.5);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .logout-btn:hover {
+            background: #EF4444;
+            color: white;
+            border-color: #EF4444;
+        }
+
+        /* Enhanced Sidebar Navigation */
+        .admin-layout {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(25px);
+            border-right: 1px solid rgba(229, 231, 235, 0.3);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3B82F6, #8B5CF6, #06B6D4);
+        }
+
+        .sidebar-header {
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(229, 231, 235, 0.3);
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1E40AF, #3B82F6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-subtitle {
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 8px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateX(8px) scale(1.02);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+        }
+
+        .nav-item:hover::before {
+            left: 100%;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
+            color: white;
+            transform: translateX(8px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-item.active::before {
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-item:hover .nav-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .nav-item.active .nav-icon {
+            transform: scale(1.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Enhanced Dashboard Cards */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1E40AF, #3B82F6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(25px);
+            border-radius: 24px;
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.12);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3B82F6, #2563EB);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(59, 130, 246, 0.2);
+        }
+
+        .stat-card:hover::after {
+            opacity: 1;
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+
+        .stat-card:active {
+            transform: translateY(-4px) scale(1.01);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .stat-icon {
+            font-size: 36px;
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1) rotate(5deg);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1E40AF, #3B82F6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover .stat-number {
+            transform: scale(1.05);
+        }
+
+        .stat-label {
+            color: #64748B;
+            font-weight: 600;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Report Cards */
+        .reports-container {
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .report-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(229, 231, 235, 0.2);
+            box-shadow: 
+                0 4px 16px rgba(0, 0, 0, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3B82F6, #8B5CF6);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .report-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.12),
+                0 8px 16px rgba(59, 130, 246, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .report-card:hover::before {
+            opacity: 1;
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+
+        .report-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 8px;
+        }
+
+        .report-badges {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge.critical { background: #FEE2E2; color: #DC2626; }
+        .badge.high { background: #FEF3C7; color: #D97706; }
+        .badge.medium { background: #FEF3C7; color: #D97706; }
+        .badge.low { background: #DCFCE7; color: #16A34A; }
+
+        .report-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-approve {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-approve:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-reject {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-reject:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-view {
+            background: rgba(243, 244, 246, 0.9);
+            backdrop-filter: blur(10px);
+            color: #374151;
+            border: 1px solid rgba(229, 231, 235, 0.3);
+        }
+
+        .btn-view:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Audit Trail */
+        .audit-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border-left: 4px solid #3B82F6;
+        }
+
+        .audit-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .audit-content {
+            flex: 1;
+        }
+
+        .audit-action {
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 4px;
+        }
+
+        .audit-details {
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        .audit-time {
+            font-size: 12px;
+            color: #9CA3AF;
+        }
+
+        /* User Management */
+        .user-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(229, 231, 235, 0.2);
+            box-shadow: 
+                0 4px 16px rgba(0, 0, 0, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #10B981, #06B6D4);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .user-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 12px 30px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .user-card:hover::before {
+            opacity: 1;
+        }
+
+        .user-info-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-card .user-avatar {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #10B981, #06B6D4);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .user-card:hover .user-avatar {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .user-details h4 {
+            margin: 0 0 4px 0;
+            color: #1F2937;
+        }
+
+        .user-details p {
+            margin: 0;
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        .role-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        /* Advanced Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(59, 130, 246, 0.1);
+            border-top: 4px solid #3B82F6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Enhanced Scrollbar */
+        .reports-container::-webkit-scrollbar,
+        .main-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .reports-container::-webkit-scrollbar-track,
+        .main-content::-webkit-scrollbar-track {
+            background: rgba(243, 244, 246, 0.5);
+            border-radius: 4px;
+        }
+
+        .reports-container::-webkit-scrollbar-thumb,
+        .main-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+            border-radius: 4px;
+        }
+
+        .reports-container::-webkit-scrollbar-thumb:hover,
+        .main-content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #2563EB, #7C3AED);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .admin-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 16px;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .main-content {
+                padding: 16px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+            
+            .section-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            
+            .user-card {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="floating-orbs">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+        <div class="gradient-orb orb-4"></div>
+        <div class="gradient-orb orb-5"></div>
+    </div>
+
+    <div class="admin-container">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-content">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <button onclick="goBackToPortal()" style="
+                        background: linear-gradient(135deg, #3B82F6, #2563EB);
+                        border: none;
+                        border-radius: 12px;
+                        padding: 12px 20px;
+                        color: white;
+                        font-size: 14px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+                    " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(59, 130, 246, 0.35)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(59, 130, 246, 0.25)';">
+                        ← Back to Portal
+                    </button>
+                    <div class="admin-title">Government Admin</div>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar">GA</div>
+                    <div class="user-details">
+                        <div class="user-name" id="current-user">Government Administrator</div>
+                        <div class="user-role" id="current-role">
+                            <span class="user-status">Online</span> • Level 4 Clearance
+                        </div>
+                    </div>
+                    <button onclick="logout()" class="logout-btn">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Layout -->
+        <div class="admin-layout">
+            <!-- Enhanced Sidebar -->
+            <nav class="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">Admin Portal</div>
+                    <div class="sidebar-subtitle">Government Operations</div>
+                </div>
+                
+                <div class="nav-item active" onclick="showSection('dashboard')">
+                    <span class="nav-icon">📈</span>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" onclick="showSection('reports')">
+                    <span class="nav-icon">📋</span>
+                    <span>Report Management</span>
+                </div>
+                <div class="nav-item" onclick="showSection('users')">
+                    <span class="nav-icon">👥</span>
+                    <span>User Management</span>
+                </div>
+                <div class="nav-item" onclick="showSection('audit')">
+                    <span class="nav-icon">📜</span>
+                    <span>Audit Trail</span>
+                </div>
+                <div class="nav-item" onclick="showSection('settings')">
+                    <span class="nav-icon">⚙️</span>
+                    <span>System Settings</span>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Enhanced Dashboard Section -->
+                <section id="dashboard" class="content-section active">
+                    <div class="section-header">
+                        <h2 class="section-title">Dashboard Overview</h2>
+                        <div class="section-actions">
+                            <button class="btn" style="background: linear-gradient(135deg, #10B981, #059669); color: white; padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600;" onclick="refreshDashboard()">
+                                🔄 Refresh
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-grid">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon">📋</div>
+                            </div>
+                            <div class="stat-number" id="pending-count">15</div>
+                            <div class="stat-label">Pending Reports</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon">✅</div>
+                            </div>
+                            <div class="stat-number" id="approved-count">234</div>
+                            <div class="stat-label">Approved Reports</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon">❌</div>
+                            </div>
+                            <div class="stat-number" id="rejected-count">12</div>
+                            <div class="stat-label">Rejected Reports</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon">👥</div>
+                            </div>
+                            <div class="stat-number" id="users-count">8</div>
+                            <div class="stat-label">Active Users</div>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(25px); border-radius: 24px; padding: 32px; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1); position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #10B981, #06B6D4);"></div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                            <h3 style="margin: 0; color: #1F2937; font-size: 1.5rem; font-weight: 700;">Recent Activity</h3>
+                            <div style="background: rgba(16, 185, 129, 0.1); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #059669;">
+                                🔴 Live Feed
+                            </div>
+                        </div>
+                        <div id="recent-activity">
+                            <!-- Recent activity will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Enhanced Reports Section -->
+                <section id="reports" class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Report Management</h2>
+                        <div class="section-actions">
+                            <select id="report-filter" onchange="filterReports()" style="padding: 10px 16px; border: 2px solid rgba(59, 130, 246, 0.2); border-radius: 12px; background: rgba(255, 255, 255, 0.9); font-weight: 500; cursor: pointer;">
+                                <option value="all">All Reports</option>
+                                <option value="pending">Pending</option>
+                                <option value="critical">Critical</option>
+                                <option value="high">High Priority</option>
+                            </select>
+                            <button onclick="refreshReports()" class="btn" style="background: linear-gradient(135deg, #3B82F6, #2563EB); color: white; padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600;">
+                                🔄 Refresh
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="reports-container" id="reports-container">
+                        <!-- Reports will be populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Enhanced Users Section -->
+                <section id="users" class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">User Management</h2>
+                        <div class="section-actions">
+                            <button onclick="addNewUser()" class="btn" style="background: linear-gradient(135deg, #10B981, #059669); color: white; padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600;">
+                                ➕ Add User
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="users-container">
+                        <!-- Users will be populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Enhanced Audit Trail Section -->
+                <section id="audit" class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Audit Trail</h2>
+                        <div class="section-actions">
+                            <button class="btn" style="background: linear-gradient(135deg, #8B5CF6, #7C3AED); color: white; padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600;" onclick="exportAuditLog()">
+                                📄 Export Log
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(25px); border-radius: 24px; padding: 32px; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 8px 32px rgba(139, 92, 246, 0.1); position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #8B5CF6, #7C3AED);"></div>
+                        <div id="audit-trail">
+                            <!-- Audit trail will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Enhanced Settings Section -->
+                <section id="settings" class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">System Settings</h2>
+                        <div class="section-actions">
+                            <button class="btn" style="background: linear-gradient(135deg, #F59E0B, #D97706); color: white; padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600;" onclick="backupSettings()">
+                                💾 Backup
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(25px); border-radius: 24px; padding: 32px; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 8px 32px rgba(245, 158, 11, 0.1); position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #F59E0B, #D97706);"></div>
+                        <h3 style="margin-bottom: 24px; font-size: 1.25rem; font-weight: 700; color: #1F2937;">Security Settings</h3>
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Session Timeout (minutes)</label>
+                            <input type="number" value="30" style="padding: 8px 12px; border: 1px solid #E5E7EB; border-radius: 8px; width: 200px;">
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Auto-approve Low Priority Reports</label>
+                            <input type="checkbox" style="margin-right: 8px;">
+                            <span style="font-size: 14px; color: #6B7280;">Enable automatic approval for low-risk reports</span>
+                        </div>
+                        
+                        <button class="btn" style="background: linear-gradient(135deg, #3B82F6, #2563EB); color: white; padding: 12px 24px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; margin-top: 20px;">Save Settings</button>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="government-admin.js"></script>
+</body>
+</html>
