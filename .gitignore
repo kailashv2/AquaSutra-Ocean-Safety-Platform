@@ -1,13 +1,42 @@
 # Dependencies
 node_modules/
 npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
 
 # Environment variables
 .env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Sensitive data and credentials
+*.pem
+*.key
+*.p12
+*.cert
+*.crt
+*.cer
+*.pfx
+*.p7b
+*.p7c
 
 # Database files
 *.db
 *.sqlite
+*.sqlite3
+*.sql
+*.dump
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # OS generated files
 .DS_Store
@@ -25,4 +54,29 @@ Thumbs.db
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
+*.swp
+*.swo
+*~
+
+# Build directories
+build/
+dist/
+
+# Cache directories
+.cache/
+.temp/
+.tmp/
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local development
+.local-*
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
