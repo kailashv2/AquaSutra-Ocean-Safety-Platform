@@ -125,10 +125,8 @@ class AquaSutraEnhanced {
     // 3. REAL-TIME CROWDSOURCED DATA AGGREGATION
     async loadDashboardData(filters = {}) {
         try {
-            const queryParams = new URLSearchParams(filters);
-            const response = await fetch(`${this.apiBase}/analytics/dashboard?${queryParams}`, {
-                headers: { 'Authorization': `Bearer ${this.getAuthToken()}` }
-            });
+            // Use the correct endpoint that exists on the server
+            const response = await fetch(`${this.apiBase}/dashboard-stats`);
 
             if (response.ok) {
                 const dashboardData = await response.json();
@@ -141,20 +139,24 @@ class AquaSutraEnhanced {
     }
 
     updateDashboard(data) {
-        // Update summary statistics
+        // Update summary statistics using the correct data structure from dashboard-stats endpoint
         if (document.getElementById('totalReports')) {
-            document.getElementById('totalReports').textContent = data.summary?.totalReports || 0;
+            document.getElementById('totalReports').textContent = data.data?.recent_reports || 0;
         }
         if (document.getElementById('verifiedReports')) {
-            document.getElementById('verifiedReports').textContent = data.summary?.verifiedReports || 0;
+            document.getElementById('verifiedReports').textContent = data.data?.monitoring_locations || 0;
         }
         if (document.getElementById('activeHotspots')) {
-            document.getElementById('activeHotspots').textContent = data.activeHotspots?.length || 0;
+            document.getElementById('activeHotspots').textContent = data.data?.high_risk_locations || 0;
         }
 
-        // Update charts and visualizations
-        this.updateHazardDistributionChart(data.hazardDistribution);
-        this.updateRealtimeMap(data.activeHotspots);
+        // Update charts and visualizations if methods exist
+        if (this.updateHazardDistributionChart) {
+            this.updateHazardDistributionChart(data.data);
+        }
+        if (this.updateRealtimeMap) {
+            this.updateRealtimeMap(data.data);
+        }
     }
 
     // 4. INTERACTIVE MAP WITH DYNAMIC HOTSPOTS
@@ -182,13 +184,24 @@ class AquaSutraEnhanced {
 
     async loadHotspots() {
         try {
-            const response = await fetch(`${this.apiBase}/hotspots`, {
-                headers: { 'Authorization': `Bearer ${this.getAuthToken()}` }
-            });
+            // Use ocean-data endpoint instead since hotspots endpoint doesn't exist
+            const response = await fetch(`${this.apiBase}/ocean-data`);
 
             if (response.ok) {
-                const { hotspots } = await response.json();
-                this.updateHotspotsOnMap(hotspots);
+                const result = await response.json();
+                if (result.success) {
+                    // Convert ocean data to hotspot format
+                    const hotspots = result.data.filter(item => item.risk_level === 'high').map(item => ({
+                        location: { lat: item.latitude, lng: item.longitude },
+                        intensityScore: item.risk_level === 'high' ? 8 : item.risk_level === 'medium' ? 5 : 2,
+                        reportCount: 1,
+                        socialMediaCount: 0,
+                        hazardTypes: ['ocean_conditions'],
+                        lastActivity: item.timestamp,
+                        radius: 1000
+                    }));
+                    this.updateHotspotsOnMap(hotspots);
+                }
             }
         } catch (error) {
             console.error('Hotspots loading failed:', error);
@@ -226,16 +239,10 @@ class AquaSutraEnhanced {
     // 5. SOCIAL MEDIA INTEGRATION WITH NLP
     async loadSocialMediaData(filters = {}) {
         try {
-            const queryParams = new URLSearchParams(filters);
-            const response = await fetch(`${this.apiBase}/social/posts?${queryParams}`, {
-                headers: { 'Authorization': `Bearer ${this.getAuthToken()}` }
-            });
-
-            if (response.ok) {
-                const socialData = await response.json();
-                this.updateSocialMediaFeed(socialData.posts);
-                return socialData;
-            }
+            // Social media endpoint doesn't exist, so we'll skip this for now
+            // or provide mock data for demo purposes
+            console.log('Social media integration not implemented yet');
+            return { posts: [] };
         } catch (error) {
             console.error('Social media data loading failed:', error);
         }

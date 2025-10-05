@@ -233,6 +233,169 @@ app.get('/api/alerts', (req, res) => {
     });
 });
 
+// Get user's hazard reports
+app.get('/api/users/:userId/reports', (req, res) => {
+    const userId = req.params.userId;
+    
+    db.all('SELECT * FROM hazard_reports WHERE reporter_email = (SELECT email FROM users WHERE id = ?) ORDER BY created_at DESC', [userId], (err, rows) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        res.json({
+            success: true,
+            data: rows,
+            message: 'User reports retrieved successfully'
+        });
+    });
+});
+
+// Get user's hazard reports by email (for cases where we don't have user ID)
+app.get('/api/reports/by-email/:email', (req, res) => {
+    const email = req.params.email;
+    
+    db.all('SELECT * FROM hazard_reports WHERE reporter_email = ? ORDER BY created_at DESC', [email], (err, rows) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        res.json({
+            success: true,
+            data: rows,
+            message: 'User reports retrieved successfully'
+        });
+    });
+});
+
+// Get all hazard reports (for managers)
+app.get('/api/reports/all', (req, res) => {
+    const { status, severity, limit = 50 } = req.query;
+    
+    let query = 'SELECT * FROM hazard_reports WHERE 1=1';
+    const params = [];
+    
+    if (status) {
+        query += ' AND status = ?';
+        params.push(status);
+    }
+    
+    if (severity) {
+        query += ' AND severity = ?';
+        params.push(severity);
+    }
+    
+    query += ' ORDER BY created_at DESC LIMIT ?';
+    params.push(parseInt(limit));
+    
+    db.all(query, params, (err, rows) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        res.json({
+            success: true,
+            data: rows,
+            message: 'All reports retrieved successfully'
+        });
+    });
+});
+
+// Update report status (for managers)
+app.put('/api/reports/:id/status', (req, res) => {
+    const reportId = req.params.id;
+    const { status, verification_notes } = req.body;
+    
+    if (!status) {
+        return res.status(400).json({
+            success: false,
+            message: 'Status is required'
+        });
+    }
+    
+    // Add verification_notes column if it doesn't exist
+    db.run('ALTER TABLE hazard_reports ADD COLUMN verification_notes TEXT', (err) => {
+        // Ignore error if column already exists
+    });
+    
+    const updateQuery = verification_notes 
+        ? 'UPDATE hazard_reports SET status = ?, verification_notes = ? WHERE id = ?'
+        : 'UPDATE hazard_reports SET status = ? WHERE id = ?';
+    
+    const params = verification_notes 
+        ? [status, verification_notes, reportId]
+        : [status, reportId];
+    
+    db.run(updateQuery, params, function(err) {
+        if (err) {
+            res.status(500).json({ 
+                success: false, 
+                error: err.message 
+            });
+            return;
+        }
+        
+        if (this.changes === 0) {
+            res.status(404).json({
+                success: false,
+                message: 'Report not found'
+            });
+            return;
+        }
+        
+        res.json({
+            success: true,
+            message: 'Report status updated successfully'
+        });
+    });
+});
+
+// Get dashboard statistics for managers
+app.get('/api/manager/dashboard-stats', (req, res) => {
+    const stats = {};
+    
+    // Get urgent reports (high severity + pending)
+    db.get('SELECT COUNT(*) as count FROM hazard_reports WHERE severity = "high" AND status = "pending"', (err, row) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        stats.urgent_reports = row.count;
+        
+        // Get pending reports
+        db.get('SELECT COUNT(*) as count FROM hazard_reports WHERE status = "pending"', (err, row) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            stats.pending_reports = row.count;
+            
+            // Get verified reports today
+            db.get('SELECT COUNT(*) as count FROM hazard_reports WHERE status = "verified" AND date(updated_at) = date("now")', (err, row) => {
+                if (err) {
+                    res.status(500).json({ error: err.message });
+                    return;
+                }
+                stats.verified_today = row.count;
+                
+                // Get total reports
+                db.get('SELECT COUNT(*) as count FROM hazard_reports', (err, row) => {
+                    if (err) {
+                        res.status(500).json({ error: err.message });
+                        return;
+                    }
+                    stats.total_reports = row.count;
+                    
+                    res.json({
+                        success: true,
+                        data: stats,
+                        message: 'Manager dashboard statistics retrieved successfully'
+                    });
+                });
+            });
+        });
+    });
+});
+
 // Submit hazard report
 app.post('/api/report-hazard', (req, res) => {
     const { reporter_name, reporter_email, hazard_type, description, location, latitude, longitude, severity } = req.body;

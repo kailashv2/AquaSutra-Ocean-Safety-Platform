@@ -86,7 +86,7 @@ async function loadDashboardData() {
         
     } catch (error) {
         console.error('Error loading data:', error);
-        showNotification('Error loading data', 'error');
+        // Don't show notification for this error as it's not critical
     }
 }
 

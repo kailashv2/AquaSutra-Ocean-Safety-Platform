@@ -1050,9 +1050,22 @@
         <!-- Floating orbs -->
         <div class="floating-orb-1"></div>
         <div class="floating-orb-2"></div>
-        <div class="floating-orb-3"></div>
-    </div>
-
+        <!-- Authentication System -->
+    <script src="auth.js"></script>
+    <!-- Authentication Guard -->
+    <script src="auth-guard.js"></script>
+    <!-- Role-based Navigation -->
+    <script src="role-navigation.js"></script>
     <script src="report-hazard.js"></script>
+    
+    <script>
+        // Protect this page - require authentication
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!authGuard.protectPageContent()) {
+                // Hide the main content until authenticated
+                document.querySelector('.main-content').style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
