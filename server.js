@@ -871,6 +871,61 @@ app.post('/api/auth/google/callback', async (req, res) => {
     }
 });
 
+// Token validation middleware
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+
+    if (!token) {
+        return res.status(401).json({
+            success: false,
+            message: 'Access token required'
+        });
+    }
+
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) {
+            return res.status(403).json({
+                success: false,
+                message: 'Invalid or expired token'
+            });
+        }
+        req.user = user;
+        next();
+    });
+}
+
+// Validate token endpoint
+app.post('/api/validate-token', authenticateToken, (req, res) => {
+    // Get user details from database to ensure user still exists
+    db.get('SELECT id, username, email, role FROM users WHERE id = ?', [req.user.userId], (err, user) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                message: 'Server error'
+            });
+        }
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        res.json({
+            success: true,
+            message: 'Token is valid',
+            user: {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                role: user.role
+            }
+        });
+    });
+});
+
 // User login
 app.post('/api/login', (req, res) => {
     const { email, password } = req.body;

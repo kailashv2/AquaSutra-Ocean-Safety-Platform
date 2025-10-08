@@ -16,6 +16,9 @@ class AquaSutraEnhanced {
     async init() {
         console.log('🌊 Initializing AquaSutra Enhanced Features...');
         
+        // Check authentication status first
+        await this.checkAuthStatus();
+        
         // Initialize Socket.IO for real-time updates
         this.initializeSocket();
         
@@ -37,6 +40,47 @@ class AquaSutraEnhanced {
         console.log('✅ AquaSutra Enhanced Features Initialized');
     }
 
+    // Check authentication status
+    async checkAuthStatus() {
+        const token = localStorage.getItem('authToken');
+        const user = localStorage.getItem('user');
+        
+        if (token && user) {
+            try {
+                // Validate token with server
+                const response = await fetch(`${this.apiBase}/validate-token`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    this.currentUser = result.user;
+                    localStorage.setItem('user', JSON.stringify(result.user));
+                    this.updateUIForRole(result.user.role);
+                } else {
+                    // Token is invalid, clear local storage
+                    console.log('Token validation failed, clearing auth data...');
+                    this.clearAuthData();
+                }
+            } catch (error) {
+                console.error('Token validation error:', error);
+                // On network error, keep user logged in locally
+                this.currentUser = JSON.parse(user);
+            }
+        }
+    }
+
+    // Clear authentication data
+    clearAuthData() {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('user');
+        this.currentUser = null;
+    }
+
     // 1. GEOTAGGED CITIZEN REPORTING WITH MEDIA UPLOAD
     async submitHazardReport(reportData) {
         const enhancedReport = {
@@ -49,7 +93,7 @@ class AquaSutraEnhanced {
 
         if (this.isOnline) {
             try {
-                const response = await fetch(`${this.apiBase}/reports`, {
+                const response = await fetch(`${this.apiBase}/report-hazard`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -77,7 +121,7 @@ class AquaSutraEnhanced {
     // 2. ROLE-BASED ACCESS CONTROL
     async authenticateUser(credentials) {
         try {
-            const response = await fetch(`${this.apiBase}/auth/login`, {
+            const response = await fetch(`${this.apiBase}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(credentials)

@@ -34,7 +34,7 @@ async function initializeMyReports() {
 
 function getCurrentUser() {
     // Try to get user from localStorage or session
-    const userData = localStorage.getItem('aquasutra_user');
+    const userData = localStorage.getItem('user');
     if (userData) {
         try {
             return JSON.parse(userData);
@@ -515,8 +515,8 @@ function updateNavigationForUser() {
 }
 
 function logout() {
-    localStorage.removeItem('aquasutra_user');
-    localStorage.removeItem('aquasutra_token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('authToken');
     window.location.href = 'index.html';
 }
 

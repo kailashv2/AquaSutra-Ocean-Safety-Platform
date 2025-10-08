@@ -43,7 +43,7 @@ class RoleBasedNavigation {
 
     loadCurrentUser() {
         try {
-            const userData = localStorage.getItem('aquasutra_user');
+            const userData = localStorage.getItem('user');
             if (userData) {
                 this.currentUser = JSON.parse(userData);
             }
@@ -183,7 +183,7 @@ class RoleBasedNavigation {
     setupEventListeners() {
         // Listen for storage changes (user login/logout in other tabs)
         window.addEventListener('storage', (e) => {
-            if (e.key === 'aquasutra_user') {
+            if (e.key === 'user') {
                 this.loadCurrentUser();
                 this.updateNavigation();
             }
@@ -204,7 +204,7 @@ class RoleBasedNavigation {
     // Method to be called when user logs in
     onUserLogin(user) {
         this.currentUser = user;
-        localStorage.setItem('aquasutra_user', JSON.stringify(user));
+        localStorage.setItem('user', JSON.stringify(user));
         this.updateNavigation();
         
         // Dispatch custom event
@@ -214,8 +214,8 @@ class RoleBasedNavigation {
     // Method to be called when user logs out
     onUserLogout() {
         this.currentUser = null;
-        localStorage.removeItem('aquasutra_user');
-        localStorage.removeItem('aquasutra_token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('authToken');
         this.updateNavigation();
         
         // Dispatch custom event

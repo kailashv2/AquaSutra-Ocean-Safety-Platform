@@ -157,7 +157,7 @@ export const OfflineProvider = ({ children }) => {
     setIsSyncing(true);
     
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
       if (!token) {
         setIsSyncing(false);
         return;

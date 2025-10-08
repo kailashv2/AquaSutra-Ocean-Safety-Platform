@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Test - AquaSutra</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        button { margin: 5px; padding: 10px 15px; cursor: pointer; }
+        .test-links a { display: block; margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h1>🧪 AquaSutra Authentication Test</h1>
+    
+    <div class="test-section info">
+        <h3>Current Authentication Status</h3>
+        <div id="authStatus">Checking...</div>
+        <div id="userInfo"></div>
+        <div id="tokenInfo"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>Quick Actions</h3>
+        <button onclick="checkAuth()">🔍 Check Auth Status</button>
+        <button onclick="clearAuth()">🗑️ Clear Auth Data</button>
+        <button onclick="testLogin()">🔑 Test Login</button>
+        <button onclick="refreshPage()">🔄 Refresh Page</button>
+    </div>
+
+    <div class="test-section">
+        <h3>Test Navigation (Authentication Persistence)</h3>
+        <div class="test-links">
+            <a href="index.html" target="_blank">🏠 Home Page</a>
+            <a href="report-hazard.html" target="_blank">📝 Report Hazard</a>
+            <a href="my-reports.html" target="_blank">📊 My Reports</a>
+            <a href="manager-reports.html" target="_blank">👨‍💼 Manager Reports</a>
+            <a href="hazard-map.html" target="_blank">🗺️ Hazard Map</a>
+            <a href="premium-dashboard.html" target="_blank">💎 Premium Dashboard</a>
+        </div>
+        <p><strong>Instructions:</strong> Login first, then click these links to test if authentication persists across pages.</p>
+    </div>
+
+    <div class="test-section">
+        <h3>localStorage Inspector</h3>
+        <div id="storageInfo"></div>
+        <button onclick="inspectStorage()">🔍 Inspect Storage</button>
+    </div>
+
+    <script>
+        function checkAuth() {
+            const token = localStorage.getItem('authToken');
+            const user = localStorage.getItem('user');
+            
+            const statusDiv = document.getElementById('authStatus');
+            const userDiv = document.getElementById('userInfo');
+            const tokenDiv = document.getElementById('tokenInfo');
+            
+            if (token && user) {
+                statusDiv.innerHTML = '✅ <strong>AUTHENTICATED</strong>';
+                statusDiv.parentElement.className = 'test-section success';
+                
+                try {
+                    const userData = JSON.parse(user);
+                    userDiv.innerHTML = `👤 User: ${userData.username} (${userData.role})`;
+                    tokenDiv.innerHTML = `🔑 Token: ${token.substring(0, 20)}...`;
+                } catch (e) {
+                    userDiv.innerHTML = '❌ Error parsing user data';
+                    tokenDiv.innerHTML = `🔑 Token: ${token.substring(0, 20)}...`;
+                }
+            } else {
+                statusDiv.innerHTML = '❌ <strong>NOT AUTHENTICATED</strong>';
+                statusDiv.parentElement.className = 'test-section error';
+                userDiv.innerHTML = `👤 User: ${user ? 'Invalid data' : 'None'}`;
+                tokenDiv.innerHTML = `🔑 Token: ${token ? 'Invalid' : 'None'}`;
+            }
+        }
+
+        function clearAuth() {
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user');
+            localStorage.removeItem('aquasutra_token'); // Legacy cleanup
+            localStorage.removeItem('aquasutra_user'); // Legacy cleanup
+            localStorage.removeItem('token'); // React app cleanup
+            
+            alert('🗑️ All authentication data cleared!');
+            checkAuth();
+        }
+
+        function testLogin() {
+            // Simulate a login for testing
+            const testUser = {
+                id: 999,
+                username: 'testuser',
+                email: 'test@aquasutra.com',
+                role: 'user'
+            };
+            const testToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test.token';
+            
+            localStorage.setItem('authToken', testToken);
+            localStorage.setItem('user', JSON.stringify(testUser));
+            
+            alert('🔑 Test login data set!');
+            checkAuth();
+        }
+
+        function refreshPage() {
+            window.location.reload();
+        }
+
+        function inspectStorage() {
+            const storageDiv = document.getElementById('storageInfo');
+            let html = '<h4>All localStorage Data:</h4><ul>';
+            
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const value = localStorage.getItem(key);
+                html += `<li><strong>${key}:</strong> ${value.substring(0, 100)}${value.length > 100 ? '...' : ''}</li>`;
+            }
+            
+            html += '</ul>';
+            storageDiv.innerHTML = html;
+        }
+
+        // Auto-check on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            inspectStorage();
+        });
+
+        // Listen for storage changes
+        window.addEventListener('storage', function(e) {
+            console.log('Storage changed:', e.key, e.newValue);
+            checkAuth();
+        });
+    </script>
+</body>
+</html>

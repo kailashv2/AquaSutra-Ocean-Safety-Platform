@@ -11,7 +11,7 @@ const API = axios.create({
 // Add a request interceptor to include auth token in headers
 API.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('authToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -26,7 +26,7 @@ export const authService = {
     try {
       const response = await API.post('/auth/login', credentials);
       if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('authToken', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
       }
       return response.data;
@@ -39,7 +39,7 @@ export const authService = {
     try {
       const response = await API.post('/auth/register', userData);
       if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('authToken', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
       }
       return response.data;
@@ -49,7 +49,7 @@ export const authService = {
   },
 
   logout: () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('authToken');
     localStorage.removeItem('user');
   },
 
@@ -59,7 +59,7 @@ export const authService = {
   },
 
   isAuthenticated: () => {
-    return !!localStorage.getItem('token');
+    return !!localStorage.getItem('authToken');
   }
 };
 

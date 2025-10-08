@@ -13,8 +13,8 @@ class AuthGuard {
 
     loadCurrentUser() {
         try {
-            const userData = localStorage.getItem('aquasutra_user');
-            const token = localStorage.getItem('aquasutra_token');
+            const userData = localStorage.getItem('user');
+            const token = localStorage.getItem('authToken');
             
             if (userData && token) {
                 this.currentUser = JSON.parse(userData);
@@ -41,7 +41,7 @@ class AuthGuard {
     }
 
     isAuthenticated() {
-        return this.currentUser !== null && localStorage.getItem('aquasutra_token') !== null;
+        return this.currentUser !== null && localStorage.getItem('authToken') !== null;
     }
 
     hasRole(requiredRole) {
@@ -344,8 +344,8 @@ class AuthGuard {
 
     onLoginSuccess(user, token) {
         this.currentUser = user;
-        localStorage.setItem('aquasutra_user', JSON.stringify(user));
-        localStorage.setItem('aquasutra_token', token);
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('authToken', token);
         
         this.closeLoginModal();
         this.closeSignupModal();
@@ -367,8 +367,8 @@ class AuthGuard {
 
     logout() {
         this.currentUser = null;
-        localStorage.removeItem('aquasutra_user');
-        localStorage.removeItem('aquasutra_token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('authToken');
         
         // Update navigation
         if (window.roleNavigation) {
@@ -382,7 +382,7 @@ class AuthGuard {
     setupAuthListeners() {
         // Listen for storage changes (logout in other tabs)
         window.addEventListener('storage', (e) => {
-            if (e.key === 'aquasutra_user' && !e.newValue) {
+            if (e.key === 'user' && !e.newValue) {
                 this.currentUser = null;
                 window.location.href = 'index.html';
             }

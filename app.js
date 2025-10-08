@@ -90,6 +90,38 @@ async function loadDashboardData() {
     }
 }
 
+// Update statistics display
+function updateStats(statsData) {
+    console.log('📊 Dashboard Statistics:', statsData);
+    
+    // Update stats in the global state for other components to use
+    AppState.stats = statsData;
+    
+    // If there are specific stat elements in the DOM, update them here
+    // For now, we'll just log the data and store it in AppState
+    
+    // Example of how to update specific elements when they exist:
+    // const monitoringElement = document.getElementById('monitoring-locations');
+    // if (monitoringElement) {
+    //     monitoringElement.textContent = statsData.monitoring_locations || 0;
+    // }
+    
+    // const alertsElement = document.getElementById('active-alerts');
+    // if (alertsElement) {
+    //     alertsElement.textContent = statsData.active_alerts || 0;
+    // }
+    
+    // const riskElement = document.getElementById('high-risk-locations');
+    // if (riskElement) {
+    //     riskElement.textContent = statsData.high_risk_locations || 0;
+    // }
+    
+    // const reportsElement = document.getElementById('recent-reports');
+    // if (reportsElement) {
+    //     reportsElement.textContent = statsData.recent_reports || 0;
+    // }
+}
+
 // Update chart display
 function updateChartDisplay() {
     const chartBars = document.querySelectorAll('.chart-bar');
@@ -1494,7 +1526,7 @@ async function handleGoogleCredentialResponse(response) {
             
             // Store token if provided
             if (result.token) {
-                localStorage.setItem('aquasutra_token', result.token);
+                localStorage.setItem('authToken', result.token);
             }
             
             showNotification(`Welcome ${result.user.username}! Logged in with Google`, 'success');
@@ -1578,7 +1610,7 @@ async function handleGoogleLogin() {
                             
                             // Store token if provided
                             if (result.token) {
-                                localStorage.setItem('aquasutra_token', result.token);
+                                localStorage.setItem('authToken', result.token);
                             }
                             
                             showNotification(`Welcome ${result.user.username}! Logged in with Google`, 'success');

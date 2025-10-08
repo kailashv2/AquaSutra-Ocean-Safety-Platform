@@ -38,7 +38,7 @@ async function initializeManagerDashboard() {
 }
 
 function getCurrentUser() {
-    const userData = localStorage.getItem('aquasutra_user');
+    const userData = localStorage.getItem('user');
     if (userData) {
         try {
             return JSON.parse(userData);
